@@ -10,5 +10,5 @@ import Combine
 import Network
 
 protocol CategoryRepository {
-  func categoryList() -> AnyPublisher<CategoryList, DataTransferError>
+  func categoryList() -> AnyPublisher<CategoryResponse, DataTransferError>
 }

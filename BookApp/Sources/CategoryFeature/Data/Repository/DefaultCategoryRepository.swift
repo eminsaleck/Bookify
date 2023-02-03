@@ -20,12 +20,20 @@ final class DefaultCategoryRepository {
 
 extension DefaultCategoryRepository: CategoryRepository {
 
-  func categoryList() -> AnyPublisher<CategoryList, DataTransferError> {
-      return remoteDataSource.fetchCategoryList()
-      .map { list in
-          let categoryDomain = list.categories.map { Categoria(id: $0.id, name: $0.name) }
-        return CategoryList(categories: categoryDomain)
-      }
-      .eraseToAnyPublisher()
-  }
+    func categoryList() -> AnyPublisher<CategoryResponse, DataTransferError> {
+        return remoteDataSource.fetchCategoryList()
+            .map { list in
+                let results = list.results.map { CategoryList(listName: $0.listName,
+                                                             displayName: $0.displayName,
+                                                             listNameEncoded: $0.listNameEncoded,
+                                                             oldestPublishedDate: $0.oldestPublishedDate,
+                                                             newestPublishedDate: $0.newestPublishedDate,
+                                                             updated: $0.updated)
+                }
+                return CategoryResponse(status: list.status,
+                                        copyright: list.copyright,
+                                        numResults: list.numResults,
+                                        results: results)
+            }.eraseToAnyPublisher()
+    }
 }

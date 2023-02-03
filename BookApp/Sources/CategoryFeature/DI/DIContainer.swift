@@ -13,7 +13,6 @@ final public  class DIContainer {
     
     private let dependencies: FeatureDependencies
     
-    
     private lazy var categoryRepository: CategoryRepository = {
       return DefaultCategoryRepository(
         remoteDataSource: DefaultCategoryRemoteDataSource(dataTransferService: dependencies.apiDataTransferService)
@@ -22,6 +21,7 @@ final public  class DIContainer {
     
     init(dependencies: FeatureDependencies) {
         self.dependencies = dependencies
+        
     }
     
     private func makeFetchGenresUseCase() -> FetchCategoryUseCase {

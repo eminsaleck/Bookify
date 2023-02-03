@@ -21,7 +21,7 @@ public class DIContainer {
 
     private lazy var apiDataTransferService: DataTransferServiceProtocol = {
         let queryParameters = [
-            "api_key": appConfigurations.apiKey
+            "api-key": appConfigurations.apiKey
         ]
         
         let configuration = ApiDataNetworkConfig(

@@ -9,7 +9,7 @@ import Combine
 import Network
 
 protocol FetchCategoryUseCase {
-  func execute(requestValue: FetchCategoryUseCaseRequestValue) -> AnyPublisher<CategoryList, DataTransferError>
+  func execute(requestValue: FetchCategoryUseCaseRequestValue) -> AnyPublisher<CategoryResponse, DataTransferError>
 }
 
 struct FetchCategoryUseCaseRequestValue { }
@@ -22,7 +22,7 @@ final class DefaultFetchGenresUseCase: FetchCategoryUseCase {
     self.categoryRepository = categoryRepository
   }
 
-  func execute(requestValue: FetchCategoryUseCaseRequestValue) -> AnyPublisher<CategoryList, DataTransferError> {
+  func execute(requestValue: FetchCategoryUseCaseRequestValue) -> AnyPublisher<CategoryResponse, DataTransferError> {
       return categoryRepository.categoryList()
   }
 }

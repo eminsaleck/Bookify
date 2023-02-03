@@ -9,5 +9,5 @@ import Combine
 import Network
 
 public protocol CategoryRemoteDataSource {
-  func fetchCategoryList() -> AnyPublisher<CategoryListDTO, DataTransferError>
+  func fetchCategoryList() -> AnyPublisher<CategoryResponseDTO, DataTransferError>
 }

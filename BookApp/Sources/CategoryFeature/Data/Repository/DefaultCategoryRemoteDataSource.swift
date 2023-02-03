@@ -17,8 +17,8 @@ final public class DefaultCategoryRemoteDataSource: CategoryRemoteDataSource{
       self.dataTransferService = dataTransferService
     }
 
-     public func fetchCategoryList() -> AnyPublisher<CategoryListDTO, DataTransferError> {
-      let endpoint = Endpoint<CategoryListDTO>(
+     public func fetchCategoryList() -> AnyPublisher<CategoryResponseDTO, DataTransferError> {
+      let endpoint = Endpoint<CategoryResponseDTO>(
         path: "names.json",
         method: .get
       )
