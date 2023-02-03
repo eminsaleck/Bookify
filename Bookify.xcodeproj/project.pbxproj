@@ -8,10 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		ACC1AE2A298CEF6100E207CC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC1AE29298CEF6100E207CC /* AppDelegate.swift */; };
-		ACC1AE2C298CEF6100E207CC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACC1AE2B298CEF6100E207CC /* SceneDelegate.swift */; };
-		ACC1AE31298CEF6100E207CC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ACC1AE2F298CEF6100E207CC /* Main.storyboard */; };
 		ACC1AE33298CEF6200E207CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ACC1AE32298CEF6200E207CC /* Assets.xcassets */; };
 		ACC1AE36298CEF6200E207CC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ACC1AE34298CEF6200E207CC /* LaunchScreen.storyboard */; };
+		ACCB1729298CFAAD00078E7C /* AppConfigurations.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACCB1728298CFAAD00078E7C /* AppConfigurations.swift */; };
+		ACCB172D298D086500078E7C /* AppFeature in Frameworks */ = {isa = PBXBuildFile; productRef = ACCB172C298D086500078E7C /* AppFeature */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,14 +34,13 @@
 /* Begin PBXFileReference section */
 		ACC1AE26298CEF6100E207CC /* Bookify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Bookify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACC1AE29298CEF6100E207CC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		ACC1AE2B298CEF6100E207CC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		ACC1AE30298CEF6100E207CC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		ACC1AE32298CEF6200E207CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ACC1AE35298CEF6200E207CC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ACC1AE37298CEF6200E207CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ACC1AE3C298CEF6200E207CC /* BookifyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BookifyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACC1AE46298CEF6200E207CC /* BookifyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BookifyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		ACCB1723298CF1C400078E7C /* BookApp */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = BookApp; sourceTree = "<group>"; };
+		ACCB1728298CFAAD00078E7C /* AppConfigurations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfigurations.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +48,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ACCB172D298D086500078E7C /* AppFeature in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,6 +75,7 @@
 				ACCB1723298CF1C400078E7C /* BookApp */,
 				ACC1AE28298CEF6100E207CC /* Entry */,
 				ACC1AE27298CEF6100E207CC /* Products */,
+				ACCB1724298CF29C00078E7C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -92,13 +93,19 @@
 			isa = PBXGroup;
 			children = (
 				ACC1AE29298CEF6100E207CC /* AppDelegate.swift */,
-				ACC1AE2B298CEF6100E207CC /* SceneDelegate.swift */,
-				ACC1AE2F298CEF6100E207CC /* Main.storyboard */,
 				ACC1AE32298CEF6200E207CC /* Assets.xcassets */,
 				ACC1AE34298CEF6200E207CC /* LaunchScreen.storyboard */,
 				ACC1AE37298CEF6200E207CC /* Info.plist */,
+				ACCB1728298CFAAD00078E7C /* AppConfigurations.swift */,
 			);
 			path = Entry;
+			sourceTree = "<group>";
+		};
+		ACCB1724298CF29C00078E7C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -117,6 +124,9 @@
 			dependencies = (
 			);
 			name = Bookify;
+			packageProductDependencies = (
+				ACCB172C298D086500078E7C /* AppFeature */,
+			);
 			productName = Bookify;
 			productReference = ACC1AE26298CEF6100E207CC /* Bookify.app */;
 			productType = "com.apple.product-type.application";
@@ -207,7 +217,6 @@
 			files = (
 				ACC1AE36298CEF6200E207CC /* LaunchScreen.storyboard in Resources */,
 				ACC1AE33298CEF6200E207CC /* Assets.xcassets in Resources */,
-				ACC1AE31298CEF6100E207CC /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,8 +241,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ACCB1729298CFAAD00078E7C /* AppConfigurations.swift in Sources */,
 				ACC1AE2A298CEF6100E207CC /* AppDelegate.swift in Sources */,
-				ACC1AE2C298CEF6100E207CC /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,14 +276,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		ACC1AE2F298CEF6100E207CC /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				ACC1AE30298CEF6100E207CC /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		ACC1AE34298CEF6200E207CC /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -409,10 +410,9 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5JVTTP945W;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Bookify/Info.plist;
+				INFOPLIST_FILE = Entry/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -437,10 +437,9 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5JVTTP945W;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Bookify/Info.plist;
+				INFOPLIST_FILE = Entry/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -572,6 +571,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		ACCB172C298D086500078E7C /* AppFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AppFeature;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = ACC1AE1E298CEF6100E207CC /* Project object */;
 }

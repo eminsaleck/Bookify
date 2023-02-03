@@ -5,24 +5,39 @@ import PackageDescription
 
 let package = Package(
     name: "BookApp",
+    defaultLocalization: "en",
     products: [
-        // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
-            name: "BookApp",
-            targets: ["BookApp"]),
+            name: "AppFeature", targets: ["AppFeature"]),
+        .library(
+            name: "Common", targets: ["Common"]),
+        .library(
+            name: "UI", targets: ["UI"]),
+        .library(
+            name: "CategoryFeature",
+            targets: ["CategoryFeature"]),
     ],
     dependencies: [
-        // Dependencies declare other packages that this package depends on.
-        // .package(url: /* package url */, from: "1.0.0"),
+       
     ],
     targets: [
-        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-        // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
-            name: "BookApp",
+            name: "AppFeature",
+            dependencies: ["Common",  "UI"]),
+        .target(
+            name: "CategoryFeature",
+            dependencies: ["Common",  "UI"]),
+        .target(
+            name: "Common",
             dependencies: []),
-        .testTarget(
-            name: "BookAppTests",
-            dependencies: ["BookApp"]),
+        .target(
+            name: "UI",
+            dependencies: [
+                "Common",
+            ],
+            resources: [
+                .process("Resources"),
+            ]
+        ),
     ]
 )
