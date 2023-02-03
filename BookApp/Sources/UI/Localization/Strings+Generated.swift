@@ -15,5 +15,7 @@ public enum Localized: String, CaseIterable {
         return localizeKey(self.rawValue, Localized.currentLocale)
     }
     
-    case mainScreen = "main_screen" 
+    case mainScreen = "main_screen"
+    case categories = "category"
+
 }

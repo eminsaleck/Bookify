@@ -10,12 +10,13 @@ import Common
 import UIKit
 
 public class CategoryCoordinator: NavigationCoordinator, CategoryCoordinatorProtocol {
-
+    
     
     public var navigationController: UINavigationController
-
+    
     private let dependencies: CategoryCoordinatorDependencies
-
+    private var childCoordinators = [CategoryChildCoordinator: Coordinator]()
+    
     
     init(navigationController: UINavigationController, dependencies: CategoryCoordinatorDependencies) {
         self.navigationController = navigationController
@@ -30,9 +31,9 @@ public class CategoryCoordinator: NavigationCoordinator, CategoryCoordinatorProt
         switch state {
         case .categoryFeatureInit:
             navigateToCategoryFeature()
-
-        case .listIsPicked:
-            navigateToList()
+            
+        case .categoryIsPicked(published: let date, listName: let name):
+            navigateToList(published: date, listName: name)
         }
     }
     
@@ -40,14 +41,20 @@ public class CategoryCoordinator: NavigationCoordinator, CategoryCoordinatorProt
 
 extension CategoryCoordinator{
     private func navigateToCategoryFeature() {
-        
         let categoryVC = dependencies.buildCategoryViewController(coordinator: self)
-       
-     navigationController.pushViewController(categoryVC, animated: true)
-        
+        navigationController.pushViewController(categoryVC, animated: true)
     }
     
-    private func navigateToList() {
-     print("navigateToList")
+    
+    // MARK: - Navigate to List
+    private func navigateToList(published: String, listName: String) {
+        print("\(published), \(listName)")
     }
 }
+
+//
+//extension CategoryCoordinator: ListCoordinatorDelegate {
+//  public func listCoordinatorDidFinish() {
+//      childCoordinators[.categoryList] = nil
+//  }
+//}

@@ -9,10 +9,13 @@ import UIKit
 
 class CategoryViewController: UIViewController {
     
+    private let viewModel: CategoryViewModel
+
     
-    init() {
+    init(viewModel: CategoryViewModel) {
+        self.viewModel = viewModel
+        
         super.init(nibName: nil, bundle: nil)
-        view.backgroundColor = .brown
     }
 
     required init?(coder: NSCoder) {
@@ -21,10 +24,8 @@ class CategoryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("Saf")
 
         view.backgroundColor = .white
-        view.backgroundColor = .darkGray
     }
 
 }

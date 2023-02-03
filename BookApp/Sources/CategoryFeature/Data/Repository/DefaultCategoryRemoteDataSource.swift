@@ -1,0 +1,27 @@
+//
+//  File.swift
+//  
+//
+//  Created by LEMIN DAHOVICH on 03.02.2023.
+//
+
+import Combine
+import Network
+import NetworkManager
+
+final public class DefaultCategoryRemoteDataSource: CategoryRemoteDataSource{
+    
+    private let dataTransferService: DataTransferServiceProtocol
+
+    init(dataTransferService: DataTransferServiceProtocol) {
+      self.dataTransferService = dataTransferService
+    }
+
+     public func fetchCategoryList() -> AnyPublisher<CategoryListDTO, DataTransferError> {
+      let endpoint = Endpoint<CategoryListDTO>(
+        path: "names.json",
+        method: .get
+      )
+      return dataTransferService.request(with: endpoint)
+    }
+}

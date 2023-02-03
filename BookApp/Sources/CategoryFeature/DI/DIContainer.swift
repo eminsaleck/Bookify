@@ -13,11 +13,19 @@ final public  class DIContainer {
     
     private let dependencies: FeatureDependencies
     
-    private var categoryViewModel: CategoryViewModel?
-
+    
+    private lazy var categoryRepository: CategoryRepository = {
+      return DefaultCategoryRepository(
+        remoteDataSource: DefaultCategoryRemoteDataSource(dataTransferService: dependencies.apiDataTransferService)
+      )
+    }()
     
     init(dependencies: FeatureDependencies) {
         self.dependencies = dependencies
+    }
+    
+    private func makeFetchGenresUseCase() -> FetchCategoryUseCase {
+        return DefaultFetchGenresUseCase(categoryRepository: categoryRepository)
     }
 }
 
@@ -30,6 +38,11 @@ extension DIContainer{
 extension DIContainer: CategoryCoordinatorDependencies {
     
     func buildCategoryViewController(coordinator: CategoryCoordinatorProtocol?) -> UIViewController {
-        return CategoryViewController()
+         
+        let categoryViewModel = CategoryViewModel(useCase: makeFetchGenresUseCase())
+        categoryViewModel.coordinator = coordinator
+        
+        let categoryVC = CategoryViewController(viewModel: categoryViewModel)
+        return categoryVC
     }
 }

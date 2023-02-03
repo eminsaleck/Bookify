@@ -15,13 +15,15 @@ protocol CategoryCoordinatorProtocol: AnyObject {
 
 public enum CategoryState: State {
     case categoryFeatureInit
-    case listIsPicked
+    case categoryIsPicked(published: String, listName: String)
 }
 
 protocol CategoryCoordinatorDependencies {
     func buildCategoryViewController(coordinator: CategoryCoordinatorProtocol?) -> UIViewController
+//    func buildListCoordinator(navigationController: UINavigationController,
+//                              delegate: ListCoordinatorDelegate?) -> ListCoordinatorProtocol
 }
 
 public enum CategoryChildCoordinator {
-    case list
+    case categoryList
 }

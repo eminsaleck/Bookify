@@ -6,6 +6,9 @@ import PackageDescription
 let package = Package(
     name: "BookApp",
     defaultLocalization: "en",
+    platforms: [
+        .iOS(.v16)
+    ],
     products: [
         .library(
             name: "AppFeature", targets: ["AppFeature"]),
@@ -16,17 +19,42 @@ let package = Package(
         .library(
             name: "CategoryFeature",
             targets: ["CategoryFeature"]),
+        .library(
+            name: "Network",
+            targets: ["Network"]),
+        .library(
+            name: "NetworkManager",
+            targets: ["NetworkManager"]),
     ],
     dependencies: [
        
     ],
     targets: [
         .target(
+            name: "NetworkManager",
+            dependencies: [
+                "Network"
+            ]),
+        .target(
+            name: "Network",
+            dependencies: []),
+        .target(
             name: "AppFeature",
-            dependencies: ["Common",  "UI", "CategoryFeature"]),
+            dependencies: [
+                "Common",
+                "UI",
+                "CategoryFeature",
+                "Network",
+                "NetworkManager",
+            ]),
         .target(
             name: "CategoryFeature",
-            dependencies: ["Common",  "UI"]),
+            dependencies: [
+                "Common",
+                "UI",
+                "NetworkManager",
+                "Network",
+            ]),
         .target(
             name: "Common",
             dependencies: []),

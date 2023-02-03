@@ -7,8 +7,10 @@
 
 import Foundation
 import Common
+import Network
 import CategoryFeature
 import UI
+import NetworkManager
 
 
 public class DIContainer {
@@ -16,6 +18,22 @@ public class DIContainer {
     private let appConfigurations: AppConfigurationProtocol
     
     private let language: Language
+
+    private lazy var apiDataTransferService: DataTransferServiceProtocol = {
+        let queryParameters = [
+            "api_key": appConfigurations.apiKey
+        ]
+        
+        let configuration = ApiDataNetworkConfig(
+            baseURL: appConfigurations.apiBaseURL,
+            headers: [
+                "Content-Type": "application/json; charset=utf-8"
+            ],
+            queryParameters: queryParameters
+        )
+        let networkService = NetworkService(config: configuration)
+        return DataTransferService(with: networkService)
+    }()
 
     
     public init(appConfigurations: AppConfigurationProtocol) {
@@ -28,7 +46,7 @@ public class DIContainer {
 
 extension DIContainer{
     func buildCategoryModule() -> CategoryFeature.Module {
-        let dependencies = CategoryFeature.FeatureDependencies()
+        let dependencies = CategoryFeature.FeatureDependencies(apiDataTransferService: apiDataTransferService)
         return CategoryFeature.Module(dependencies: dependencies)
     }
 }

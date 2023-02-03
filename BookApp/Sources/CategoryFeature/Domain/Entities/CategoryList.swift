@@ -6,9 +6,8 @@
 //
 
 import Foundation
+import Common
 
-public struct FeatureDependencies {
-
-    public init(){}
-
+struct CategoryList {
+  let categories: [Categoria]
 }
