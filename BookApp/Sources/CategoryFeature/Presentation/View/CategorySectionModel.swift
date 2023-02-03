@@ -7,36 +7,47 @@
 
 import Common
 import UI
-//
-//enum CategorySectionModel {
-//  case categories(items: [CategorySectionItem])
-//
-//  var sectionView: CategorySectionView {
-//    switch self {
-//    case .categories:
-//      return .categories
-//    }
-//  }
-//
-//  var items: [CategorySectionItem] {
-//    switch self {
-//    case let .categories(items):
-//      return items
-//    }
-//  }
-//}
-//
-//enum CategorySectionView: Hashable {
-//  case categories
-//
-//  var header: String? {
-//    switch self {
-//    case .categories:
-//      return Localized.categories.localized()
-//    }
-//  }
-//}
-//
-//enum CategorySectionItem: Hashable {
-//  case categories(items: CategoryCellViewModel)
-//}
+
+enum CategorySectionModel {
+  case categories(items: [CategorySectionItem])
+
+  var sectionView: CategorySectionView {
+    switch self {
+    case .categories:
+      return .categories
+    }
+  }
+
+  var items: [CategorySectionItem] {
+    switch self {
+    case let .categories(items):
+      return items
+    }
+  }
+}
+
+enum CategorySectionView: Hashable {
+  case categories
+
+  var header: String? {
+    switch self {
+    case .categories:
+      return Localized.categories.localized()
+    }
+  }
+}
+
+enum CategorySectionItem: Hashable {
+  case categories(items: CategoryCellViewModel)
+}
+
+enum CellID{
+    case category
+    
+    var id: String {
+        switch self {
+        case  .category:
+            return "CategoryCell"
+        }
+    }
+}

@@ -11,33 +11,33 @@ import Common
 import Network
 
 //final class CategoryViewModel: CategoryViewModelProtocol{
-final class CategoryViewModel{
+final class CategoryViewModel: CategoryViewModelProtocol{
+    
+    weak var delegate: CategoryViewModelDelegate?
     
     weak var coordinator: CategoryCoordinatorProtocol?
     var useCase: FetchCategoryUseCase
     
     let viewState = CurrentValueSubject<CategoryViewState, Never>(.loading)
+    let dataSource = CurrentValueSubject<[CategorySectionModel], Never>([])
 
-    private var disposeBag = Set<AnyCancellable>()
-
+    private var bag = Set<AnyCancellable>()
 
     init(useCase: FetchCategoryUseCase) {
         self.useCase = useCase
-    
     }
+    
     public func viewDidLoad() {
         fetch()
     }
-
-
  
-     func fetchCategories() -> AnyPublisher<CategoryResponse, ErrorEnvelope> {
+    private func fetchCategories() -> AnyPublisher<CategoryResponse, ErrorEnvelope> {
       return useCase.execute(requestValue: FetchCategoryUseCaseRequestValue())
         .mapError { error -> ErrorEnvelope in return ErrorEnvelope(transferError: error) }
         .eraseToAnyPublisher()
     }
 
-    func fetch(){
+     func fetch(){
         fetchCategories()
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
@@ -49,12 +49,12 @@ final class CategoryViewModel{
               }
             },
                   receiveValue: { [weak self] result in
-              guard let strongSelf = self else { return }
-              strongSelf.processFetched(for: result)
-                print(result.results)
+              guard let self = self else { return }
+                self.processFetched(for: result)
+                self.createSectionModel(categories: result.results)
 
             })
-            .store(in: &disposeBag)
+            .store(in: &bag)
     }
     
     private func processFetched(for response: CategoryResponse) {
@@ -65,6 +65,32 @@ final class CategoryViewModel{
         viewState.send(.populated )
       }
     }
+    
+    private func createSectionModel(categories: [CategoryList]) {
+        var sectionModel: [CategorySectionModel] = []
+        
+        let categorySectionItem = createSectionFor(categories: categories)
+
+        if !categorySectionItem.isEmpty {
+          sectionModel.append(.categories(items: categorySectionItem))
+        }
+
+        dataSource.send(sectionModel)
+    }
+
+    private func createSectionFor(categories: [CategoryList] ) -> [CategorySectionItem] {
+      return categories
+            .map {CategoryCellViewModel(category: $0)  }
+        .map { CategorySectionItem.categories(items: $0) }
+    }
+    
+    func modelIsPicked(with item: CategorySectionItem) {
+        switch item {
+        case .categories(items: let category):
+            delegate?.categoryViewModel(self, didCategoryPicked: category.listNameEncoded, published: category.oldestPublishedDate)
+        }
+    }
+    
 }
 
 

@@ -8,28 +8,46 @@
 import Foundation
 import Common
 
-//protocol CategoryCellViewModelProtocol {
-//    var id: Int { get }
-//    var name: String { get }
-//}
+protocol CategoryCellViewModelProtocol {
+    var listName: String { get }
+    var displayName: String { get }
+    var listNameEncoded: String { get }
+    var oldestPublishedDate: String { get }
+    var newestPublishedDate: String { get }
+    var updated: Updated { get }
+}
 
 
-//final class CategoryCellViewModel: CategoryCellViewModelProtocol, Hashable {
-//  let id: Int
-//  let name: String
-//  private let category: Categoria
-//
-//  public init(category: Categoria) {
-//    self.category = category
-//    id = category.id
-//    name = category.name
-//  }
-//
-//  func hash(into hasher: inout Hasher) {
-//    hasher.combine(id)
-//  }
-//
-//  static func == (lhs: CategoryCellViewModel, rhs: CategoryCellViewModel) -> Bool {
-//    return lhs.id == rhs.id
-//  }
-//}
+final class CategoryCellViewModel: CategoryCellViewModelProtocol, Hashable {
+    var listName: String
+    
+    var displayName: String
+    
+    var listNameEncoded: String
+    
+    var oldestPublishedDate: String
+    
+    var newestPublishedDate: String
+    
+    var updated: Common.Updated
+    
+  private let category: CategoryList
+
+  public init(category: CategoryList) {
+    self.category = category
+      listName = category.listName
+      displayName = category.displayName
+      listNameEncoded = category.listNameEncoded
+      oldestPublishedDate = category.oldestPublishedDate
+      newestPublishedDate = category.newestPublishedDate
+      updated = category.updated
+  }
+
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(listNameEncoded)
+  }
+
+  static func == (lhs: CategoryCellViewModel, rhs: CategoryCellViewModel) -> Bool {
+    return lhs.listNameEncoded == rhs.listNameEncoded
+  }
+}
