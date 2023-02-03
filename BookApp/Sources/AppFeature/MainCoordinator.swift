@@ -34,7 +34,7 @@ public class MainCoordinator: Coordinator {
     let tabBar = UITabBarController()
     let coordinator = SignedCoordinator(tabBarController: tabBar,
                                         DIContainer: container)
-
+      
     self.window.rootViewController = tabBar
     self.window.makeKeyAndVisible()
 

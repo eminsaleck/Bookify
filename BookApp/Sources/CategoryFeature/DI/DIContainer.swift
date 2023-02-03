@@ -9,7 +9,7 @@ import Foundation
 import Common
 import UIKit
 
-final class DIContainer {
+final public  class DIContainer {
     
     private let dependencies: FeatureDependencies
     
@@ -30,8 +30,6 @@ extension DIContainer{
 extension DIContainer: CategoryCoordinatorDependencies {
     
     func buildCategoryViewController(coordinator: CategoryCoordinatorProtocol?) -> UIViewController {
-        guard let categoryViewModel = categoryViewModel else { return UIViewController(nibName: nil, bundle: nil) }
-        categoryViewModel.coordinator = coordinator
         return CategoryViewController()
     }
 }

@@ -23,7 +23,7 @@ let package = Package(
     targets: [
         .target(
             name: "AppFeature",
-            dependencies: ["Common",  "UI"]),
+            dependencies: ["Common",  "UI", "CategoryFeature"]),
         .target(
             name: "CategoryFeature",
             dependencies: ["Common",  "UI"]),

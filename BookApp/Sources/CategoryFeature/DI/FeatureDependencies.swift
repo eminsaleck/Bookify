@@ -9,6 +9,6 @@ import Foundation
 
 public struct FeatureDependencies {
 
-    init(){}
+    public init(){}
 
 }

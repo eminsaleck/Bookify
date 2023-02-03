@@ -11,8 +11,8 @@ class CategoryViewController: UIViewController {
     
     
     init() {
-
         super.init(nibName: nil, bundle: nil)
+        view.backgroundColor = .brown
     }
 
     required init?(coder: NSCoder) {
@@ -21,12 +21,11 @@ class CategoryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        view.backgroundColor = .brown
+        print("Saf")
+
+        view.backgroundColor = .white
+        view.backgroundColor = .darkGray
     }
-    
-    override func loadView() {
-        view = UIView()
-    }
+
 }
 

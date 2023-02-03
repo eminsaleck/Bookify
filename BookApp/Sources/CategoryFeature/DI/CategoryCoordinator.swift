@@ -9,7 +9,7 @@ import Foundation
 import Common
 import UIKit
 
-class CategoryCoordinator: NavigationCoordinator, CategoryCoordinatorProtocol {
+public class CategoryCoordinator: NavigationCoordinator, CategoryCoordinatorProtocol {
 
     
     public var navigationController: UINavigationController
@@ -20,6 +20,10 @@ class CategoryCoordinator: NavigationCoordinator, CategoryCoordinatorProtocol {
     init(navigationController: UINavigationController, dependencies: CategoryCoordinatorDependencies) {
         self.navigationController = navigationController
         self.dependencies = dependencies
+    }
+    
+    public func start() {
+        navigate(with: .categoryFeatureInit)
     }
     
     func navigate(with state: CategoryState) {
@@ -36,8 +40,11 @@ class CategoryCoordinator: NavigationCoordinator, CategoryCoordinatorProtocol {
 
 extension CategoryCoordinator{
     private func navigateToCategoryFeature() {
-        let accountVC = dependencies.buildCategoryViewController(coordinator: self)
-        navigationController.pushViewController(accountVC, animated: true)
+        
+        let categoryVC = dependencies.buildCategoryViewController(coordinator: self)
+       
+     navigationController.pushViewController(categoryVC, animated: true)
+        
     }
     
     private func navigateToList() {

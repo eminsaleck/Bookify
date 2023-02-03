@@ -15,6 +15,7 @@ public enum SignedChildCoordinator {
 }
 
 public class SignedCoordinator: Coordinator {
+    
     private let tabBarController: UITabBarController
     private var childCoordinators = [SignedChildCoordinator: Coordinator]()
     private let DIContainer: DIContainer
@@ -33,10 +34,9 @@ public class SignedCoordinator: Coordinator {
         let categoryNavigation = UINavigationController()
         categoryNavigation.tabBarItem = UITabBarItem(title: Localized.mainScreen.localized(),
                                                     image: UIImage(named: "category"), tag: 3)
-        buildCategoryCoordinator(in: categoryNavigation)
+       buildCategoryCoordinator(in: categoryNavigation)
 
         tabBarController.setViewControllers([categoryNavigation], animated: true)
-        
     }
 }
 
