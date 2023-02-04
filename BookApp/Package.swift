@@ -34,7 +34,7 @@ let package = Package(
         
     ],
     dependencies: [
-       
+        .package(url: "https://github.com/onevcat/Kingfisher.git", from: "7.2.1"),
     ],
     targets: [
         .target(
@@ -85,6 +85,7 @@ let package = Package(
             name: "UI",
             dependencies: [
                 "Common",
+                "Kingfisher",
             ],
             resources: [
                 .process("Resources"),

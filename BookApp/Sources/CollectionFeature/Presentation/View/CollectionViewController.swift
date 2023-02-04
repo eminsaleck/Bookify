@@ -7,10 +7,15 @@
 
 
 import UIKit
+import Combine
+import Common
+import UI
 
 class CollectionViewController: UIViewController{
     
-  let viewModel: CollectionViewModelProtocol
+  private let viewModel: CollectionViewModelProtocol
+    private var rootView: CollectionRootView?
+
     
     init(viewModel: CollectionViewModelProtocol) {
       self.viewModel = viewModel
@@ -23,6 +28,10 @@ class CollectionViewController: UIViewController{
         viewModel.viewDidLoad()
     }
 
+    override func loadView() {
+      rootView = CollectionRootView(viewModel: viewModel)
+      view = rootView
+    }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -30,7 +39,6 @@ class CollectionViewController: UIViewController{
     
     deinit {
       viewModel.viewDidFinish()
-      print("deinit \(Self.self)")
     }
     
     //MARK: - Private

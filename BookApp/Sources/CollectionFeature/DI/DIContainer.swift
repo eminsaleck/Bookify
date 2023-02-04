@@ -37,7 +37,8 @@ final class DIContainer {
 
 extension DIContainer: CollectionCoordinatorDependencies {
     func buildcollectionViewController_ForCategory(with published: String, listName: String, coordinator: CollectionFeatureInterface.CollectionCoordinatorProtocol) -> UIViewController {       
-      let viewModel = CollectionViewModel(useCase:  makeCollectionByCategoryUseCase(listName: listName, date: published))
+      let viewModel = CollectionViewModel(useCase:  makeCollectionByCategoryUseCase(listName: listName, date: published),
+                                          coordinator: coordinator)
       let collectionVC = CollectionViewController(viewModel: viewModel)
         collectionVC.navigationItem.title = Localized.book.localized()
       return collectionVC
