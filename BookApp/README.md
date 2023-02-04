@@ -1,3 +1,5 @@
-# BookApp
+# Structure of app
 
-A description of this package.
+
+
+<img src="https://github.com/eminsaleck/Bookify/blob/main/Screnshots/structure.png" width="200px" /> 
