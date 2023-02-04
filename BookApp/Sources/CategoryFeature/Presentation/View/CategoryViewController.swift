@@ -72,7 +72,6 @@ class CategoryViewController: UIViewController, Loadable {
         rootView?.tableView.separatorStyle = .none
 
       case .error(let error):
-          print(error)
           errorView.messageLabel.text = error
         rootView?.tableView.tableFooterView = errorView
         rootView?.tableView.separatorStyle = .none

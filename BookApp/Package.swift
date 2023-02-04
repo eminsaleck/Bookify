@@ -25,11 +25,31 @@ let package = Package(
         .library(
             name: "NetworkManager",
             targets: ["NetworkManager"]),
+        .library(
+            name: "CollectionFeature",
+            targets: ["CollectionFeature"]),
+        .library(
+            name: "CollectionFeatureInterface",
+            targets: ["CollectionFeatureInterface"]),
+        
     ],
     dependencies: [
        
     ],
     targets: [
+        .target(
+            name: "CollectionFeature",
+            dependencies: [
+              "Common",
+              "CollectionFeatureInterface",
+              "UI"
+            ]),
+        .target(
+            name: "CollectionFeatureInterface",
+            dependencies: [
+                "Network",
+                "Common"
+            ]),
         .target(
             name: "NetworkManager",
             dependencies: [
@@ -46,10 +66,13 @@ let package = Package(
                 "CategoryFeature",
                 "Network",
                 "NetworkManager",
+                "CollectionFeatureInterface",
+                "CollectionFeature",
             ]),
         .target(
             name: "CategoryFeature",
             dependencies: [
+                "CollectionFeatureInterface",
                 "Common",
                 "UI",
                 "NetworkManager",

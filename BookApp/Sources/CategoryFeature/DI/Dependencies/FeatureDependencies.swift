@@ -9,14 +9,19 @@ import Foundation
 import Network
 //import Storage
 import Common
-//import ListFeatureInterface
+import CollectionFeatureInterface
 
 public struct FeatureDependencies {
     
     let apiDataTransferService: DataTransferServiceProtocol
+    let collectionBuilder: ModuleCollectionBuilder
     
-    public init(apiDataTransferService: DataTransferServiceProtocol){
+    public init(
+        apiDataTransferService: DataTransferServiceProtocol,
+        collectionBuilder: ModuleCollectionBuilder
+    ){
         self.apiDataTransferService = apiDataTransferService
+        self.collectionBuilder = collectionBuilder
     }
 
 }

@@ -72,10 +72,12 @@ final class CategoryViewModel: CategoryViewModelProtocol{
         let categorySectionItem = createSectionFor(categories: categories)
 
         if !categorySectionItem.isEmpty {
+            
           sectionModel.append(.categories(items: categorySectionItem))
         }
-
+        
         dataSource.send(sectionModel)
+        
     }
 
     private func createSectionFor(categories: [CategoryList] ) -> [CategorySectionItem] {
@@ -87,7 +89,8 @@ final class CategoryViewModel: CategoryViewModelProtocol{
     func modelIsPicked(with item: CategorySectionItem) {
         switch item {
         case .categories(items: let category):
-            delegate?.categoryViewModel(self, didCategoryPicked: category.listNameEncoded, published: category.oldestPublishedDate)
+            coordinator?.navigate(with: .categoryIsPicked(published: category.oldestPublishedDate,
+                                                          listName: category.listNameEncoded))
         }
     }
     

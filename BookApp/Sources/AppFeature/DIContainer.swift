@@ -11,6 +11,9 @@ import Network
 import CategoryFeature
 import UI
 import NetworkManager
+import CollectionFeatureInterface
+import CollectionFeature
+import UIKit
 
 
 public class DIContainer {
@@ -46,7 +49,19 @@ public class DIContainer {
 
 extension DIContainer{
     func buildCategoryModule() -> CategoryFeature.Module {
-        let dependencies = CategoryFeature.FeatureDependencies(apiDataTransferService: apiDataTransferService)
+        let dependencies = CategoryFeature.FeatureDependencies(
+            apiDataTransferService: apiDataTransferService,
+            collectionBuilder: self)
         return CategoryFeature.Module(dependencies: dependencies)
     }
+}
+
+extension DIContainer: ModuleCollectionBuilder {
+    public func buildModuleCoordinator(in navigationController: UINavigationController, delegate: CollectionCoordinatorDelegate?) -> CollectionCoordinatorProtocol {
+        let dependencies = CollectionFeatureInterface.FeatureDependencies(apiDataTransferService: apiDataTransferService)
+        
+        let module = CollectionFeature.Module(dependencies: dependencies)
+        return module.buildModuleCoordinator(in: navigationController, delegate: delegate)
+    }
+    
 }

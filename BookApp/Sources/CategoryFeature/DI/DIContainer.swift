@@ -8,6 +8,7 @@
 import Foundation
 import Common
 import UIKit
+import CollectionFeatureInterface
 
 final public  class DIContainer {
     
@@ -36,6 +37,10 @@ extension DIContainer{
 }
 
 extension DIContainer: CategoryCoordinatorDependencies {
+    func buildCollectionCoordinator(navigationController: UINavigationController, delegate: CollectionCoordinatorDelegate?) -> CollectionCoordinatorProtocol {
+        return dependencies.collectionBuilder.buildModuleCoordinator(in: navigationController, delegate: delegate)
+    }
+    
     
     func buildCategoryViewController(coordinator: CategoryCoordinatorProtocol?) -> UIViewController {
          

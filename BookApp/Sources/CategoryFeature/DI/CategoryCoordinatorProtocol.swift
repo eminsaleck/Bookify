@@ -7,7 +7,7 @@
 
 import UIKit
 import Common
-//import ListFeatureInterface
+import CollectionFeatureInterface
 
 protocol CategoryCoordinatorProtocol: AnyObject {
     func navigate(with state: CategoryState)
@@ -20,10 +20,11 @@ public enum CategoryState: State {
 
 protocol CategoryCoordinatorDependencies {
     func buildCategoryViewController(coordinator: CategoryCoordinatorProtocol?) -> UIViewController
-//    func buildListCoordinator(navigationController: UINavigationController,
-//                              delegate: ListCoordinatorDelegate?) -> ListCoordinatorProtocol
+    func buildCollectionCoordinator(navigationController: UINavigationController,
+                              delegate: CollectionCoordinatorDelegate?) -> CollectionCoordinatorProtocol
 }
 
 public enum CategoryChildCoordinator {
     case categoryList
+    case collection
 }

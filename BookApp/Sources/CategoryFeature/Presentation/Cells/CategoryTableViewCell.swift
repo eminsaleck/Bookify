@@ -11,9 +11,19 @@ import UI
 
 class CategoryTableViewCell: UITableViewCell {
     
-    private let label: UILabel = {
+    private let topLabel: UILabel = {
         let label = UILabel()
-        label.numberOfLines = 0
+        label.numberOfLines = 2
+        label.textAlignment = .center
+        label.adjustsFontForContentSizeCategory = true
+        label.font = UIFont.boldSystemFont(ofSize: 17)
+        return label
+    }()
+    
+    private let bottomLabel: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 2
+        label.textAlignment = .center
         label.adjustsFontForContentSizeCategory = true
         label.font = UIFont.systemFont(ofSize: 15)
         return label
@@ -32,26 +42,32 @@ class CategoryTableViewCell: UITableViewCell {
     
     func configViewModel(_ viewModel: CategoryCellViewModel) {
         self.viewModel = viewModel
-        label.text = viewModel.displayName
+        topLabel.text = viewModel.displayName
+        bottomLabel.text = viewModel.years
     }
     
     private func configUI() {
         backgroundColor = .secondarySystemBackground
-        contentView.addSubview(label)
-        constructHierarchy()
+        contentView.addSubview(topLabel)
+        contentView.addSubview(bottomLabel)
         constrained()
     }
-    
-    private func constructHierarchy() {
-    }
+
     
     private func constrained() {
-        label.translatesAutoresizingMaskIntoConstraints = false
+        topLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            label.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
-            label.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
+            topLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            topLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            topLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 30),
+        ])
+        
+        bottomLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            bottomLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            bottomLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            bottomLabel.topAnchor.constraint(equalTo: topLabel.bottomAnchor, constant: 30),
+            bottomLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20)
         ])
     }
 }

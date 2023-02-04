@@ -19,7 +19,7 @@ class CategoryRootView: UIView {
         tableView.tableFooterView = UIView()
         tableView.contentInsetAdjustmentBehavior = .automatic
         tableView.sectionHeaderHeight = UITableView.automaticDimension
-        tableView.estimatedSectionHeaderHeight = 30
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(CategoryTableViewCell.self,
                            forCellReuseIdentifier: CellID.category.id)
         return tableView
@@ -36,6 +36,7 @@ class CategoryRootView: UIView {
         super.init(frame: frame)
         
         addSubview(tableView)
+        constrained()
         configUI()
         
     }
@@ -45,6 +46,7 @@ class CategoryRootView: UIView {
     }
     private func configUI() {
         tableView.delegate = self
+        
         configDataSource()
         subscribe()
     }
@@ -67,6 +69,15 @@ class CategoryRootView: UIView {
         return cell
     }
     
+    private func constrained(){
+        NSLayoutConstraint.activate([
+            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            tableView.topAnchor.constraint(equalTo: topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
+    }
+    
     private func subscribe() {
         viewModel.dataSource
             .map { dataSource -> Snapshot in
@@ -85,20 +96,14 @@ class CategoryRootView: UIView {
     }
 }
 
+
 extension CategoryRootView: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let model = dataSource?.itemIdentifier(for: indexPath) {
             tableView.deselectRow(at: indexPath, animated: true)
             viewModel.modelIsPicked(with: model)
         }
     }
-    
-    private func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let index = IndexPath(row: 0, section: section)
-        
-        if let model = dataSource?.itemIdentifier(for: index), let section = dataSource?.snapshot().sectionIdentifier(containingItem: model) {
-            return section.header
-        }
-        return nil
-    }
+
 }

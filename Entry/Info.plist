@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>englisht.tff</string>
+	</array>
 	<key>API_KEY</key>
 	<string>pN0G6Xl654z1osk1wLxjUInCMoha1sgU</string>
 	<key>API_BASE_URL</key>

@@ -8,9 +8,10 @@
 import Foundation
 import Common
 import UIKit
+import UI
+import CollectionFeatureInterface
 
-public class CategoryCoordinator: NavigationCoordinator, CategoryCoordinatorProtocol {
-    
+public class CategoryCoordinator: NavigationCoordinator, CategoryCoordinatorProtocol {    
     
     public var navigationController: UINavigationController
     
@@ -42,19 +43,28 @@ public class CategoryCoordinator: NavigationCoordinator, CategoryCoordinatorProt
 extension CategoryCoordinator{
     private func navigateToCategoryFeature() {
         let categoryVC = dependencies.buildCategoryViewController(coordinator: self)
+        categoryVC.navigationItem.title = Localized.nyt.localized()
         navigationController.pushViewController(categoryVC, animated: true)
     }
     
     
     // MARK: - Navigate to List
     private func navigateToList(published: String, listName: String) {
-        print("\(published), \(listName)")
+      let collectionCoordinator = dependencies.buildCollectionCoordinator(navigationController: navigationController, delegate: self)
+        childCoordinators[.collection] = collectionCoordinator
+      let nextState = CollectionState.bookList(published: published, listName: listName)
+        collectionCoordinator.navigate(with: nextState)
     }
 }
 
-//
-//extension CategoryCoordinator: ListCoordinatorDelegate {
-//  public func listCoordinatorDidFinish() {
-//      childCoordinators[.categoryList] = nil
-//  }
-//}
+extension CategoryCoordinator: CategoryViewModelDelegate{
+    func categoryViewModel(_ categoryViewModel: CategoryViewModel, didCategoryPicked listName: String, published: String) {
+        print(listName)
+        navigate(with: .categoryIsPicked(published: published, listName: listName))
+    }
+}
+extension CategoryCoordinator: CollectionCoordinatorDelegate {
+    public func collectionCoordinatorDidFinish() {
+        childCoordinators[.collection] = nil
+    }
+}
