@@ -17,12 +17,3 @@ protocol CollectionViewModelProtocol {
     var viewState: CurrentValueSubject<SimpleViewState<CollectionCellViewModel>, Never> { get }
 }
 
-enum CellID{
-    case list
-    var id: String {
-        switch self {
-        case  .list:
-            return "list"
-        }
-    }
-}

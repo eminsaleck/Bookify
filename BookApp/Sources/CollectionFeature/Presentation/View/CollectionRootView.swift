@@ -10,21 +10,17 @@ import Combine
 import UI
 
 
-final class CollectionRootView: UIView, UITableViewDelegate{
+final class CollectionRootView: UIView, UICollectionViewDelegate{
     
     private let viewModel: CollectionViewModelProtocol
     
-    let tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .plain)
-        tableView.register(CollectionCell.self, forCellReuseIdentifier: CellID.list.id)
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = UITableView.automaticDimension
-        tableView.tableFooterView = UIView()
-        tableView.contentInsetAdjustmentBehavior = .automatic
-        return tableView
+    let collectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+        return collectionView
     }()
-    
-    typealias DataSource = UITableViewDiffableDataSource<CollectionSectionModel, CollectionCellViewModel>
+    private var detailLayout: HorizontalFlowLayout!
+
+    typealias DataSource = UICollectionViewDiffableDataSource<CollectionSectionModel, CollectionCellViewModel>
     typealias Snapshot = NSDiffableDataSourceSnapshot<CollectionSectionModel, CollectionCellViewModel>
     private var dataSource: DataSource?
     
@@ -35,7 +31,7 @@ final class CollectionRootView: UIView, UITableViewDelegate{
         self.viewModel = viewModel
         super.init(frame: frame)
         
-        addSubview(tableView)
+        addSubview(collectionView)
         configUI()
     }
     
@@ -44,18 +40,33 @@ final class CollectionRootView: UIView, UITableViewDelegate{
     }
     
     private func configUI() {
-        tableView.delegate = self
+        setupCollectionViewLayout()
+        collectionView.delegate = self
+        registerCell()
         setupDataSource()
         subscribe()
+       // constrained()
+    }
+    
+    private func registerCell(){
+        collectionView.register(CollectionCell.self, forCellWithReuseIdentifier: Constants.cellID)
+    }
+    
+    private func setupCollectionViewLayout() {
+        let detailLayoutWidth = collectionView.frame.width - Constants.detailCellOffset
+        detailLayout = HorizontalFlowLayout(preferredWidth: detailLayoutWidth,
+                                          preferredHeight: Constants.detailCellHeight)
+        detailLayout.scrollDirection = .horizontal
+        collectionView.collectionViewLayout = detailLayout
     }
 
     
     private func setupDataSource() {
-        dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, model in
-            let cell = tableView.dequeueReusableCell(withIdentifier: CellID.list.id, for: indexPath) as! CollectionCell
+        dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView) { (collectionView, indexPath, model) -> UICollectionViewCell? in
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.cellID, for: indexPath) as! CollectionCell
             cell.setModel(viewModel: model)
             return cell
-        })
+        }
     }
     
     private func subscribe() {
@@ -76,7 +87,19 @@ final class CollectionRootView: UIView, UITableViewDelegate{
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        tableView.frame = bounds
+        collectionView.frame = bounds
     }
     
+}
+
+extension CollectionRootView {
+
+    struct Constants {
+        static var cellID: String = "cell"
+        
+        static let detailCellHeight: CGFloat = 320
+        static let detailCellOffset: CGFloat = -600
+
+    }
+
 }

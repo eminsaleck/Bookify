@@ -40,7 +40,5 @@ class CollectionViewController: UIViewController{
     deinit {
       viewModel.viewDidFinish()
     }
-    
-    //MARK: - Private
 
 }

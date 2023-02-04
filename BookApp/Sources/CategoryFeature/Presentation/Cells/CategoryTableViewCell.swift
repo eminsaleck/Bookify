@@ -52,7 +52,6 @@ class CategoryTableViewCell: UITableViewCell {
         contentView.addSubview(bottomLabel)
         constrained()
     }
-
     
     private func constrained() {
         topLabel.translatesAutoresizingMaskIntoConstraints = false
