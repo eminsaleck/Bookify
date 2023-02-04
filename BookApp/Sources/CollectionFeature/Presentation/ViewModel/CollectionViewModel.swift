@@ -28,15 +28,7 @@ final class CollectionViewModel: CollectionViewModelProtocol{
     func viewDidLoad() {
         getBooks()
     }
-    
-    func willDisplayRow(_ row: Int, outOf totalRows: Int) {
-        //
-    }
-    
-    func showIsPicked(index: Int) {
-        //
-    }
-    
+
     func refreshView() {
         //
     }
