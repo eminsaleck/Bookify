@@ -77,9 +77,9 @@ import RealmSwift
     dynamic var updated: String = ""
     dynamic var books = List<BookObject>()
     dynamic var corrections = List<String>()
-
+    
     override static func primaryKey() -> String? {
         return "id"
     }
-
+    
 }
