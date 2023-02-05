@@ -8,16 +8,16 @@
 import Foundation
 
 public final class DefaultBooksMapper: BooksMapperProtocol {
-
+    
     
     public init() { }
     
     public func mapCategory(_ category: BooksResponseDTO) -> BooksResponse {
-        return BooksResponse(results: mapCategoryBook(category.results),
-                             lastModified: category.lastModified,
-                             numResults: category.numResults,
-                             status: category.status,
-                             copyright: category.copyright)
+        return BooksResponse(
+            copyright: category.copyright, lastModified: category.lastModified,
+            numResults: category.numResults,
+            status: category.status,
+            results: mapCategoryBook(category.results))
     }
     
     private func mapCategoryBook(_ categoryBook: CategoryBookDTO) -> BooksResponse.CategoryBook {
@@ -31,8 +31,7 @@ public final class DefaultBooksMapper: BooksMapperProtocol {
                                           displayName: categoryBook.displayName,
                                           normalListEndsAt: categoryBook.normalListEndsAt,
                                           updated: categoryBook.updated,
-                                          books: mapBooks(categoryBook.books),
-                                          corrections: categoryBook.corrections)
+                                          corrections: categoryBook.corrections, books: mapBooks(categoryBook.books))
     }
     
     private func mapBooks(_ books: [BookDTO]) -> [BooksResponse.CategoryBook.Book] {

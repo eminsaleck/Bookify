@@ -14,7 +14,7 @@ protocol CategoryCellViewModelProtocol {
     var listNameEncoded: String { get }
     var oldestPublishedDate: String { get }
     var newestPublishedDate: String { get }
-    var updated: Updated { get }
+    var updated: String { get }
     var years: String? { get }
 }
 
@@ -30,7 +30,7 @@ final class CategoryCellViewModel: CategoryCellViewModelProtocol, Hashable {
     
     var newestPublishedDate: String
     
-    var updated: Common.Updated
+    var updated: String
     
     var years: String? {
         let startDate = getYear(from: oldestPublishedDate)

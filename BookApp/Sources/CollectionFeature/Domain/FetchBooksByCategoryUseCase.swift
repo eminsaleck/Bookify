@@ -20,7 +20,7 @@ final class DefaultFetchBooksByCategoryUseCase: FetchBooksUseCase {
         self.booksRepository = booksRepository
     }
     
-    func execute() -> AnyPublisher<BooksResponse, DataTransferError> {
+    func execute() -> AnyPublisher<BooksResponse.CategoryBook, DataTransferError> {
         return booksRepository.fetchBooksByCategory(listName: listName, date: date)
     }
 }

@@ -55,7 +55,7 @@ final class CollectionViewModel: CollectionViewModelProtocol{
                 case .finished: break
                 }
             }, receiveValue: { [weak self] result in
-                self?.processFetched(for: result.results)
+                self?.processFetched(for: result)
             })
             .store(in: &bag)
     }

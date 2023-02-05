@@ -9,16 +9,17 @@
 import Foundation
 
 public struct BooksResponse {
+    
     public   let status, copyright: String
     public  let numResults: Int
     public  let lastModified: String
     public  let results: CategoryBook
     
-    public init(results: CategoryBook,
+    public init(copyright: String,
                 lastModified: String,
                 numResults: Int,
                 status: String,
-                copyright: String) {
+                results: CategoryBook) {
         self.results = results
         self.lastModified = lastModified
         self.numResults = numResults
@@ -37,8 +38,9 @@ public struct BooksResponse {
                    displayName: String
         public let normalListEndsAt: Int
         public let updated: String
-        public let books: [Book]
         public let corrections: [String]
+        public let books: [Book]
+
         
         public init(listName: String,
                     listNameEncoded: String,
@@ -50,8 +52,8 @@ public struct BooksResponse {
                     displayName: String,
                     normalListEndsAt: Int,
                     updated: String,
-                    books: [Book],
-                    corrections: [String]
+                    corrections: [String],
+                    books: [Book]
         )
         {
             self.listName = listName
@@ -117,8 +119,6 @@ public struct BooksResponse {
         }
     }
 }
-
-
 
 
 

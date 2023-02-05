@@ -17,7 +17,7 @@ public final class DefaultBooksRemoteDataSource: BooksRemoteDataSourceProtocol {
     self.dataTransferService = dataTransferService
   }
 
-    public func fetchBooksByCategory(listName: String, date: String) -> AnyPublisher<BooksResponseDTO, Network.DataTransferError> {
+    public func fetchBooksByCategory(listName: String, date: String) -> AnyPublisher<BooksResponseDTO, DataTransferError> {
         let endpoint = Endpoint<BooksResponseDTO>(
           path: "/\(date)/\(listName).json",
           method: .get

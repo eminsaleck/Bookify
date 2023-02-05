@@ -35,6 +35,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/onevcat/Kingfisher.git", from: "7.2.1"),
+        .package(url: "https://github.com/realm/realm-swift.git", from: "10.34.1"),
     ],
     targets: [
         .target(
@@ -77,10 +78,13 @@ let package = Package(
                 "UI",
                 "NetworkManager",
                 "Network",
+                .product(name: "RealmSwift", package: "realm-swift"),
             ]),
         .target(
             name: "Common",
-            dependencies: []),
+            dependencies: [
+                .product(name: "RealmSwift", package: "realm-swift"),
+            ]),
         .target(
             name: "UI",
             dependencies: [

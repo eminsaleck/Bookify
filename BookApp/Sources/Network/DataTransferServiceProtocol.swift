@@ -21,6 +21,7 @@ public enum DataTransferError: Error {
   case parsing(Error)
   case networkFailure(NetworkError)
   case resolvedNetworkFailure(Error)
+    case cacheFailed
 }
 
 

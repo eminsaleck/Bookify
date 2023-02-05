@@ -14,7 +14,7 @@ public struct CategoryListDTO: Codable {
     public let listNameEncoded: String
     public let oldestPublishedDate: String
     public let newestPublishedDate: String
-    public let updated: Updated
+    public let updated: String
     
     public enum CodingKeys: String, CodingKey {
         case listName = "list_name"
@@ -22,7 +22,7 @@ public struct CategoryListDTO: Codable {
         case listNameEncoded = "list_name_encoded"
         case oldestPublishedDate = "oldest_published_date"
         case newestPublishedDate = "newest_published_date"
-        case updated
+        case updated = "updated"
     }
 }
 

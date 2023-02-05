@@ -32,30 +32,30 @@ final class CategoryViewModel: CategoryViewModelProtocol{
     }
  
     private func fetchCategories() -> AnyPublisher<CategoryResponse, ErrorEnvelope> {
-      return useCase.execute(requestValue: FetchCategoryUseCaseRequestValue())
-        .mapError { error -> ErrorEnvelope in return ErrorEnvelope(transferError: error) }
-        .eraseToAnyPublisher()
-    }
+        return useCase.execute(requestValue: FetchCategoryUseCaseRequestValue())
+            .mapError { error -> ErrorEnvelope in return ErrorEnvelope(transferError: error) }
+          .eraseToAnyPublisher()
+      }
 
-     func fetch(){
-        fetchCategories()
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { completion in
-              switch completion {
-              case let .failure(error):
-                  print(error)
-              case .finished:
-                break
-              }
-            },
-                  receiveValue: { [weak self] result in
-              guard let self = self else { return }
-                self.processFetched(for: result)
-                self.createSectionModel(categories: result.results)
+    func fetch(){
+           fetchCategories()
+               .receive(on: DispatchQueue.main)
+               .sink(receiveCompletion: { completion in
+                 switch completion {
+                 case let .failure(error):
+                     print(error)
+                 case .finished:
+                   break
+                 }
+               },
+                     receiveValue: { [weak self] result in
+                 guard let self = self else { return }
+                   self.processFetched(for: result)
+                   self.createSectionModel(categories: result.results)
 
-            })
-            .store(in: &bag)
-    }
+               })
+               .store(in: &bag)
+       }
     
     private func processFetched(for response: CategoryResponse) {
         let fetchedCategories = (response.results)

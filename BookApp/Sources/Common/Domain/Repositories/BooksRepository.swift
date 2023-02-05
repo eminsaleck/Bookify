@@ -9,5 +9,5 @@ import Combine
 import Network
 
 public protocol BooksRepository {
-    func fetchBooksByCategory(listName: String, date: String) -> AnyPublisher<BooksResponse, DataTransferError>
+    func fetchBooksByCategory(listName: String, date: String) -> AnyPublisher<BooksResponse.CategoryBook, DataTransferError>
 }

@@ -16,7 +16,7 @@ public struct CategoryList: Hashable {
                 listNameEncoded: String,
                 oldestPublishedDate: String,
                 newestPublishedDate: String,
-                updated: Updated)
+                updated: String)
     {
         self.listName = listName
         self.displayName = displayName
@@ -31,5 +31,5 @@ public struct CategoryList: Hashable {
     public let listNameEncoded: String
     public let oldestPublishedDate: String
     public let newestPublishedDate: String
-    public let updated: Updated
+    public let updated: String
 }

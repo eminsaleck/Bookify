@@ -9,6 +9,6 @@ import Combine
 import Network
 
 public protocol FetchBooksUseCase {
-  func execute() -> AnyPublisher<BooksResponse, DataTransferError>
+    func execute() -> AnyPublisher<BooksResponse.CategoryBook, DataTransferError>
 }
 
