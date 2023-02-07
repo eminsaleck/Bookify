@@ -152,7 +152,7 @@ public class CollectionCell: UICollectionViewCell {
     public override init(frame: CGRect) {
         super.init(frame: frame)
         configUI()
-        update()
+        subscribe()
     }
     
     public func setModel(viewModel: CollectionCellViewModel) {
@@ -195,7 +195,7 @@ public class CollectionCell: UICollectionViewCell {
         shopsSubject.send(shops)
     }
     
-    private func update() {
+    private func subscribe() {
         shopsSubject
             .sink(receiveValue: { [weak self] shops in
                 self?.linskStackView.arrangedSubviews.forEach({ $0.removeFromSuperview() })

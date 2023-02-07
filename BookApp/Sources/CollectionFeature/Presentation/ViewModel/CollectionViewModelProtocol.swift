@@ -17,10 +17,6 @@ protocol CollectionViewModelProtocol {
     var viewState: CurrentValueSubject<SimpleViewState<CollectionCellViewModel>, Never> { get }
 }
 
-protocol CollectionRootDelegate: AnyObject {
-    func collectionCellDidTapUrl(_ url: String)
-}
-
 protocol CollectionCellDelegate: AnyObject {
     func collectionCellDidTapUrl(_ url: String)
 }

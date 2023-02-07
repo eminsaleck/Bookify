@@ -8,7 +8,6 @@
 import UIKit
 import Combine
 import UI
-import SafariServices
 
 final class CollectionRootView: UIView, UICollectionViewDelegate, CollectionCellDelegate{
     
@@ -20,8 +19,9 @@ final class CollectionRootView: UIView, UICollectionViewDelegate, CollectionCell
         return collectionView
     }()
     private var detailLayout: HorizontalFlowLayout!
-    weak var delegate: CollectionRootDelegate?
-        
+    
+    var urlOpener: ((String) -> Void)?
+    
     typealias DataSource = UICollectionViewDiffableDataSource<CollectionSectionModel, CollectionCellViewModel>
     typealias Snapshot = NSDiffableDataSourceSnapshot<CollectionSectionModel, CollectionCellViewModel>
     private var dataSource: DataSource?
@@ -38,7 +38,7 @@ final class CollectionRootView: UIView, UICollectionViewDelegate, CollectionCell
     }
     
     func collectionCellDidTapUrl(_ url: String) {
-        delegate?.collectionCellDidTapUrl(url)
+        urlOpener?(url)
     }
     
     required init?(coder: NSCoder) {
@@ -51,7 +51,6 @@ final class CollectionRootView: UIView, UICollectionViewDelegate, CollectionCell
         registerCell()
         setupDataSource()
         subscribe()
-       // constrained()
     }
     
     private func registerCell(){

@@ -28,27 +28,28 @@ class CollectionViewController: UIViewController{
         super.viewDidLoad()
         view.backgroundColor = .red
         viewModel.viewDidLoad()
+        
+        rootView?.urlOpener = { [weak self] url in
+            self?.openURL(url)
+        }
     }
     
     override func loadView() {
         rootView = CollectionRootView(viewModel: viewModel)
-        rootView?.delegate = self
         view = rootView
     }
     
+    func openURL(_ url: String) {
+        guard let url = URL(string: url) else { return }
+        let safariVC = SFSafariViewController(url: url)
+        present(safariVC, animated: true, completion: nil)
+    }
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     deinit {
         viewModel.viewDidFinish()
-    }
-}
-
-extension CollectionViewController: CollectionRootDelegate{
-    func collectionCellDidTapUrl(_ url: String) {
-        guard let url = URL(string: url) else { return }
-        let safariVC = SFSafariViewController(url: url)
-        present(safariVC, animated: true, completion: nil)
     }
 }
