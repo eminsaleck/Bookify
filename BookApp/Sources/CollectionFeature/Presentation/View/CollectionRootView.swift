@@ -8,18 +8,20 @@
 import UIKit
 import Combine
 import UI
+import SafariServices
 
-
-final class CollectionRootView: UIView, UICollectionViewDelegate{
+final class CollectionRootView: UIView, UICollectionViewDelegate, CollectionCellDelegate{
     
     private let viewModel: CollectionViewModelProtocol
     
     let collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+        collectionView.backgroundColor = .white
         return collectionView
     }()
     private var detailLayout: HorizontalFlowLayout!
-
+    weak var delegate: CollectionRootDelegate?
+        
     typealias DataSource = UICollectionViewDiffableDataSource<CollectionSectionModel, CollectionCellViewModel>
     typealias Snapshot = NSDiffableDataSourceSnapshot<CollectionSectionModel, CollectionCellViewModel>
     private var dataSource: DataSource?
@@ -33,6 +35,10 @@ final class CollectionRootView: UIView, UICollectionViewDelegate{
         
         addSubview(collectionView)
         configUI()
+    }
+    
+    func collectionCellDidTapUrl(_ url: String) {
+        delegate?.collectionCellDidTapUrl(url)
     }
     
     required init?(coder: NSCoder) {
@@ -64,6 +70,7 @@ final class CollectionRootView: UIView, UICollectionViewDelegate{
     private func setupDataSource() {
         dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView) { (collectionView, indexPath, model) -> UICollectionViewCell? in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.cellID, for: indexPath) as! CollectionCell
+            cell.delegate = self
             cell.setModel(viewModel: model)
             return cell
         }
@@ -97,7 +104,7 @@ extension CollectionRootView {
     struct Constants {
         static var cellID: String = "cell"
         
-        static let detailCellHeight: CGFloat = 320
+        static let detailCellHeight: CGFloat = 350
         static let detailCellOffset: CGFloat = -600
 
     }

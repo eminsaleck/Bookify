@@ -19,4 +19,6 @@ public enum Localized: String, CaseIterable {
     case categories = "category"
     case nyt = "the_new_york_times"
     case book = "category_s_book"
+    case linksToBuy = "links_to_buy"
+    case published = "published"
 }
