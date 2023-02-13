@@ -10,13 +10,23 @@ import Combine
 import Common
 import Network
 
-//final class CategoryViewModel: CategoryViewModelProtocol{
+class DateFormatterCounter {
+    static var count = 0
+    static let formatter = DateFormatter()
+
+    init() {
+        DateFormatterCounter.count += 1
+    }
+}
+
 final class CategoryViewModel: CategoryViewModelProtocol{
     
     weak var delegate: CategoryViewModelDelegate?
     
     weak var coordinator: CategoryCoordinatorProtocol?
     var useCase: FetchCategoryUseCase
+    
+    private let dateFormatter = DateFormatter()
     
     let viewState = CurrentValueSubject<CategoryViewState, Never>(.loading)
     let dataSource = CurrentValueSubject<[CategorySectionModel], Never>([])
@@ -82,7 +92,7 @@ final class CategoryViewModel: CategoryViewModelProtocol{
 
     private func createSectionFor(categories: [CategoryList] ) -> [CategorySectionItem] {
       return categories
-            .map {CategoryCellViewModel(category: $0)  }
+            .map {CategoryCellViewModel(category: $0, formatter: dateFormatter)  }
         .map { CategorySectionItem.categories(items: $0) }
     }
     

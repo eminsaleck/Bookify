@@ -32,16 +32,20 @@ final class CategoryCellViewModel: CategoryCellViewModelProtocol, Hashable {
     
     var updated: String
     
+    private let formatter: DateFormatter
+    
     var years: String? {
-        let startDate = getYear(from: oldestPublishedDate)
-        let endDate = getYear(from: newestPublishedDate)
+        let startDate = getYear(from: oldestPublishedDate, formatter)
+        let endDate = getYear(from: newestPublishedDate, formatter)
         return startDate + " - " + endDate
     }
     
     private let category: CategoryList
     
-    public init(category: CategoryList) {
+    public init(category: CategoryList, formatter: DateFormatter) {
         self.category = category
+        self.formatter = formatter
+        
         listName = category.listName
         displayName = category.displayName
         listNameEncoded = category.listNameEncoded
@@ -62,12 +66,10 @@ final class CategoryCellViewModel: CategoryCellViewModelProtocol, Hashable {
 
 extension CategoryCellViewModel{
     
-    private func getYear(from dateString: String?) -> String {
+    private func getYear(from dateString: String?,_ formatter: DateFormatter) -> String {
         guard let dateString = dateString else {
             return "?"
-        }
-
-        let formatter = DateFormatter()
+        }       
         formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.timeZone = TimeZone(identifier: "America/New_York")
         formatter.dateFormat = "yyyy-MM-dd"
