@@ -10,15 +10,6 @@ import Combine
 import Common
 import Network
 
-class DateFormatterCounter {
-    static var count = 0
-    static let formatter = DateFormatter()
-
-    init() {
-        DateFormatterCounter.count += 1
-    }
-}
-
 final class CategoryViewModel: CategoryViewModelProtocol{
     
     weak var delegate: CategoryViewModelDelegate?

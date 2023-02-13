@@ -36,6 +36,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/onevcat/Kingfisher.git", from: "7.2.1"),
         .package(url: "https://github.com/realm/realm-swift.git", from: "10.34.1"),
+//        .package(url: "https://github.com/realm/SwiftLint.git", from: "0.40.2")
     ],
     targets: [
         .target(
@@ -94,6 +95,6 @@ let package = Package(
             resources: [
                 .process("Resources"),
             ]
-        ),
+        )
     ]
 )
