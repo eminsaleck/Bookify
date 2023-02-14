@@ -42,7 +42,6 @@ extension DefaultCategoryRepository: CategoryRepository {
                 return categoryResponse
             }
             .catch { error -> AnyPublisher<CategoryResponse, DataTransferError> in
-
                 return self.localDataSource.fetch(ofType: CategoryResponseObject.self)
                     .tryMap { categoryObject in
                         if let categoryObject = categoryObject {

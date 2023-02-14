@@ -21,7 +21,6 @@ public class LocalStorage: LocalStorageProtocol {
     
     public init() {
         self.realm = try! Realm()
-        
     }
     
     public func fetch<T: Object>(ofType type: T.Type) -> AnyPublisher<T?, DataTransferError> {

@@ -45,6 +45,7 @@ let package = Package(
             name: "CollectionFeature",
             dependencies: [
               "Common",
+              "Persistance",
               "CollectionFeatureInterface",
               "UI"
             ]),
@@ -95,6 +96,7 @@ let package = Package(
         .target(
             name: "Common",
             dependencies: [
+                "Persistance",
                 .product(name: "RealmSwift", package: "realm-swift"),
             ]),
         .target(
