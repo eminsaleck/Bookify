@@ -76,12 +76,13 @@ extension DefaultCategoryRepository: CategoryRepository {
         let categoryResponse = CategoryResponse(status: list.status,
                                                 copyright: list.copyright,
                                                 numResults: list.numResults,
-                                                results: list.results.map { CategoryList(listName: $0.listName,
-                                                                                         displayName: $0.displayName,
-                                                                                         listNameEncoded: $0.listNameEncoded,
-                                                                                         oldestPublishedDate: $0.oldestPublishedDate,
-                                                                                         newestPublishedDate: $0.newestPublishedDate,
-                                                                                         updated: $0.updated)
+                                                results: list.results.map {
+            CategoryList(listName: $0.listName,
+            displayName: $0.displayName,
+            listNameEncoded: $0.listNameEncoded,
+            oldestPublishedDate: $0.oldestPublishedDate,
+            newestPublishedDate: $0.newestPublishedDate,
+            updated: $0.updated)
         })
         return categoryResponse
     }
