@@ -33,19 +33,9 @@ extension DefaultCategoryRepository: CategoryRepository {
     func categoryList() -> AnyPublisher<CategoryResponse, DataTransferError> {
         return remoteDataSource.fetchCategoryList()
             .map { [weak self] list in
-                let categoryResponse = CategoryResponse(status: list.status,
-                                                        copyright: list.copyright,
-                                                        numResults: list.numResults,
-                                                        results: list.results.map { CategoryList(listName: $0.listName,
-                                                                                                 displayName: $0.displayName,
-                                                                                                 listNameEncoded: $0.listNameEncoded,
-                                                                                                 oldestPublishedDate: $0.oldestPublishedDate,
-                                                                                                 newestPublishedDate: $0.newestPublishedDate,
-                                                                                                 updated: $0.updated)
-                })
-                
-                self?.cache(categoryResponse: categoryResponse)
-                return categoryResponse
+                let categoryResponse = self?.mapDTO(list: list)
+                self?.cache(categoryResponse: categoryResponse!)
+                return categoryResponse!
             }
             .catch { error -> AnyPublisher<CategoryResponse, DataTransferError> in
                 return self.localDataSource.fetch(ofType: CategoryResponseObject.self)
@@ -80,6 +70,20 @@ extension DefaultCategoryRepository: CategoryRepository {
                 print("cached success")
             })
             .store(in: &bag)
+    }
+    
+    private func mapDTO(list: CategoryResponseDTO) -> CategoryResponse{
+        let categoryResponse = CategoryResponse(status: list.status,
+                                                copyright: list.copyright,
+                                                numResults: list.numResults,
+                                                results: list.results.map { CategoryList(listName: $0.listName,
+                                                                                         displayName: $0.displayName,
+                                                                                         listNameEncoded: $0.listNameEncoded,
+                                                                                         oldestPublishedDate: $0.oldestPublishedDate,
+                                                                                         newestPublishedDate: $0.newestPublishedDate,
+                                                                                         updated: $0.updated)
+        })
+        return categoryResponse
     }
 }
 

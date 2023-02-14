@@ -16,6 +16,8 @@ public final class DefaultBooksRepository {
     private let realmMapper: RealmMapperProtocol
     private let localDataSource: LocalStorageProtocol
     
+    private var bag = Set<AnyCancellable>()
+    
     public init(booksRemoteDataSource: BooksRemoteDataSourceProtocol,
                 networkMapper: BooksMapperProtocol,
                 realmMapper: RealmMapperProtocol,
@@ -35,7 +37,7 @@ extension DefaultBooksRepository: BooksRepository {
         return booksRemoteDataSource.fetchBooksByCategory(listName: listName, date: date)
             .map { [weak self] booksResponse in
                 let booksResponse = self?.networkMapper.mapCategory(booksResponse)
-                self?.realmMapper.cache(booksResponse: booksResponse!)
+                self?.cache(booksResponse!)
                 return booksResponse!.results
             }
             .catch { error ->  AnyPublisher<BooksResponse.CategoryBook, DataTransferError> in
@@ -60,6 +62,23 @@ extension DefaultBooksRepository: BooksRepository {
                     .eraseToAnyPublisher()
             }
             .eraseToAnyPublisher()
+    }
+    
+    private func cache(_ booksResponse: BooksResponse) {
+        let object = realmMapper.mapCategoryBookObject(booksResponse: booksResponse)
+        localDataSource.save(object: object)
+            .subscribe(on: DispatchQueue.main)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .failure(let error):
+                    print("cache failed with error: \(error)")
+                case .finished:
+                    break
+                }
+            }, receiveValue: { _ in
+                print("cached success")
+            })
+            .store(in: &bag)
     }
 }
 
