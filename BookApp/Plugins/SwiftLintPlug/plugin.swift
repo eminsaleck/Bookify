@@ -2,7 +2,7 @@ import Foundation
 import PackagePlugin
 
 @main
-struct SwiftLintXcode: BuildToolPlugin {
+struct SwiftLintPlug: BuildToolPlugin {
     func createBuildCommands(context: PluginContext, target: Target) async throws -> [Command] {
         guard let sourceTarget = target as? SourceModuleTarget else {
             return []
@@ -56,7 +56,7 @@ struct SwiftLintXcode: BuildToolPlugin {
 #if canImport(XcodeProjectPlugin)
 import XcodeProjectPlugin
 
-extension SwiftLintXcode: XcodeBuildToolPlugin {
+extension SwiftLintPlug: XcodeBuildToolPlugin {
     func createBuildCommands(context: XcodePluginContext, target: XcodeTarget) throws -> [Command] {
         let inputFilePaths = target.inputFiles
             .filter { $0.type == .source && $0.path.extension == "swift" }

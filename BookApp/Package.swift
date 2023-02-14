@@ -48,7 +48,7 @@ let package = Package(
             checksum: "abe7c0bb505d26c232b565c3b1b4a01a8d1a38d86846e788c4d02f0b1042a904"
         ),
         .plugin(
-            name: "SwiftLintXcode",
+            name: "SwiftLintPlug",
             capability: .buildTool(),
             dependencies: ["SwiftLintBinary"]
         ),
@@ -80,7 +80,7 @@ let package = Package(
         .target(
             name: "Network",
             dependencies: [],
-            plugins: ["SwiftLintXcode"]
+            plugins: ["SwiftLintPlug"]
         ),
         .target(
             name: "AppFeature",
