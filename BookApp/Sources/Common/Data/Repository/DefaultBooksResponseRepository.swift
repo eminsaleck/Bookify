@@ -13,7 +13,7 @@ public final class DefaultBooksRepository {
     private let booksRemoteDataSource: BooksRemoteDataSourceProtocol
     private let mapper: BooksMapperProtocol
     private let realmManager = RealmManager()
-    
+
     public init(booksRemoteDataSource: BooksRemoteDataSourceProtocol, mapper: BooksMapperProtocol) {
         self.booksRemoteDataSource = booksRemoteDataSource
         self.mapper = mapper
@@ -21,24 +21,31 @@ public final class DefaultBooksRepository {
 }
 
 extension DefaultBooksRepository: BooksRepository {
+    
     public func fetchBooksByCategory(listName: String, date: String) -> AnyPublisher<BooksResponse.CategoryBook, DataTransferError> {
-        let realm = try! Realm()
-        let booksResponseObject = realm.objects(CategoryBookObject.self).filter("listNameEncoded = '\(listName)'").first
-        if let object = booksResponseObject {
-            let booksResponse = realmManager.mapResults(object: object)
-            return Just(booksResponse)
-                .setFailureType(to: DataTransferError.self)
-                .eraseToAnyPublisher()
-        } else {
+            
             return booksRemoteDataSource.fetchBooksByCategory(listName: listName, date: date)
                 .map { [weak self] booksResponse in
                     let booksResponse = self?.mapper.mapCategory(booksResponse)
                     self?.realmManager.cache(booksResponse: booksResponse!)
                     return booksResponse!.results
                 }
-                .eraseToAnyPublisher()
+                .catch { error ->  AnyPublisher<BooksResponse.CategoryBook, DataTransferError> in
+                    let realm = try! Realm()
+                    let booksResponseObject = realm.objects(CategoryBookObject.self).filter("listNameEncoded = '\(listName)'").first
+                    if let object = booksResponseObject {
+                        let booksResponse = self.realmManager.mapResults(object: object)
+                        return Just(booksResponse)
+                            .setFailureType(to: DataTransferError.self)
+                            .eraseToAnyPublisher()
+                    } else {
+                        return Fail(error: DataTransferError.noResponse)
+                            .eraseToAnyPublisher()
+                    }
+                }
+            .eraseToAnyPublisher()
         }
     }
-    
-    
-}
+
+
+

@@ -7,21 +7,25 @@
 
 import Foundation
 import Network
-//import Storage
 import Common
 import CollectionFeatureInterface
+import Persistance
+
 
 public struct FeatureDependencies {
     
     let apiDataTransferService: DataTransferServiceProtocol
     let collectionBuilder: ModuleCollectionBuilder
+    let localStorage: LocalStorageProtocol
     
     public init(
         apiDataTransferService: DataTransferServiceProtocol,
-        collectionBuilder: ModuleCollectionBuilder
+        collectionBuilder: ModuleCollectionBuilder,
+        localStorage: LocalStorageProtocol
     ){
         self.apiDataTransferService = apiDataTransferService
         self.collectionBuilder = collectionBuilder
+        self.localStorage = localStorage
     }
 
 }

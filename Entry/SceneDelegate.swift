@@ -14,10 +14,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     let container = DIContainer(appConfigurations: AppConfigurations())
     var coordinator: MainCoordinator?
 
-    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        
+    func scene(_ scene: UIScene,
+               willConnectTo session: UISceneSession,
+               options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        
         window = UIWindow(windowScene: windowScene)
         coordinator = MainCoordinator(window: window!, container: container)
         coordinator?.start()
@@ -25,4 +25,3 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
 }
-

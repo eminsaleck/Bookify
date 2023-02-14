@@ -7,7 +7,7 @@ let package = Package(
     name: "BookApp",
     defaultLocalization: "en",
     platforms: [
-        .iOS(.v16)
+        .iOS(.v16),
     ],
     products: [
         .library(
@@ -23,6 +23,9 @@ let package = Package(
             name: "Network",
             targets: ["Network"]),
         .library(
+            name: "Persistance",
+            targets: ["Persistance"]),
+        .library(
             name: "NetworkManager",
             targets: ["NetworkManager"]),
         .library(
@@ -31,12 +34,11 @@ let package = Package(
         .library(
             name: "CollectionFeatureInterface",
             targets: ["CollectionFeatureInterface"]),
-        
+
     ],
     dependencies: [
-        .package(url: "https://github.com/onevcat/Kingfisher.git", from: "7.2.1"),
-        .package(url: "https://github.com/realm/realm-swift.git", from: "10.34.1"),
-//        .package(url: "https://github.com/realm/SwiftLint.git", from: "0.40.2")
+        .package(url: "https://github.com/onevcat/Kingfisher.git", from: "7.6.1"),
+        .package(url: "https://github.com/realm/realm-swift.git", from: "10.35.1"),
     ],
     targets: [
         .target(
@@ -53,6 +55,12 @@ let package = Package(
                 "Common"
             ]),
         .target(
+            name: "Persistance",
+            dependencies: [
+                "Network",
+                .product(name: "RealmSwift", package: "realm-swift"),
+            ]),
+        .target(
             name: "NetworkManager",
             dependencies: [
                 "Network"
@@ -63,6 +71,7 @@ let package = Package(
         .target(
             name: "AppFeature",
             dependencies: [
+                "Persistance",
                 "Common",
                 "UI",
                 "CategoryFeature",
@@ -70,11 +79,13 @@ let package = Package(
                 "NetworkManager",
                 "CollectionFeatureInterface",
                 "CollectionFeature",
-            ]),
+            ]
+        ),
         .target(
             name: "CategoryFeature",
             dependencies: [
                 "CollectionFeatureInterface",
+                "Persistance",
                 "Common",
                 "UI",
                 "NetworkManager",

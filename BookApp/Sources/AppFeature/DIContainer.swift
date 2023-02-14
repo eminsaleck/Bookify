@@ -14,19 +14,16 @@ import NetworkManager
 import CollectionFeatureInterface
 import CollectionFeature
 import UIKit
-
+import Persistance
 
 public class DIContainer {
-    
     private let appConfigurations: AppConfigurationProtocol
-    
     private let language: Language
 
     private lazy var apiDataTransferService: DataTransferServiceProtocol = {
         let queryParameters = [
             "api-key": appConfigurations.apiKey
         ]
-        
         let configuration = ApiDataNetworkConfig(
             baseURL: appConfigurations.apiBaseURL,
             headers: [
@@ -37,21 +34,24 @@ public class DIContainer {
         let networkService = NetworkService(config: configuration)
         return DataTransferService(with: networkService)
     }()
-
+    
+    private lazy var localStorage: LocalStorage = {
+        return LocalStorage()
+    }()
     
     public init(appConfigurations: AppConfigurationProtocol) {
         self.appConfigurations = appConfigurations
-        
         language = Language(languageStrings: Locale.preferredLanguages) ?? .en
         Localized.currentLocale = Locale(identifier: language.rawValue)
     }
+    
 }
 
-extension DIContainer{
+extension DIContainer {
     func buildCategoryModule() -> CategoryFeature.Module {
         let dependencies = CategoryFeature.FeatureDependencies(
             apiDataTransferService: apiDataTransferService,
-            collectionBuilder: self)
+            collectionBuilder: self, localStorage: localStorage)
         return CategoryFeature.Module(dependencies: dependencies)
     }
 }
