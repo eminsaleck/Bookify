@@ -58,7 +58,7 @@ extension DIContainer {
 
 extension DIContainer: ModuleCollectionBuilder {
     public func buildModuleCoordinator(in navigationController: UINavigationController, delegate: CollectionCoordinatorDelegate?) -> CollectionCoordinatorProtocol {
-        let dependencies = CollectionFeatureInterface.FeatureDependencies(apiDataTransferService: apiDataTransferService)
+        let dependencies = CollectionFeatureInterface.FeatureDependencies(apiDataTransferService: apiDataTransferService, localStorage: localStorage)
         
         let module = CollectionFeature.Module(dependencies: dependencies)
         return module.buildModuleCoordinator(in: navigationController, delegate: delegate)

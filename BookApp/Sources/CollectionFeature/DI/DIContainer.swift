@@ -28,7 +28,7 @@ final class DIContainer {
      func makeCollectionByCategoryUseCase(listName: String, date: String) -> FetchBooksUseCase {
         let booksRepository = DefaultBooksRepository(
             booksRemoteDataSource: DefaultBooksRemoteDataSource(dataTransferService: dependencies.apiDataTransferService),
-            mapper: DefaultBooksMapper() )
+            mapper: DefaultBooksMapper(), localDataSource: dependencies.localStorage )
         
         return DefaultFetchBooksByCategoryUseCase(
             listName: listName, date: date, booksRepository: booksRepository)

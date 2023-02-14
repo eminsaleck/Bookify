@@ -37,7 +37,7 @@ extension DefaultCategoryRepository: CategoryRepository {
                                                                                                  newestPublishedDate: $0.newestPublishedDate,
                                                                                                  updated: $0.updated)
                 })
-
+                
                 self?.cache(categoryResponse: categoryResponse)
                 return categoryResponse
             }

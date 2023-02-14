@@ -14,6 +14,7 @@ import Network
 public protocol LocalStorageProtocol {
     func fetch<T: Object>(ofType type: T.Type) -> AnyPublisher<T?, DataTransferError>
     func save<T: Object>(object: T) -> AnyPublisher<Void, DataTransferError>
+    func fetch<T: Object>(ofType type: T.Type, listName: String) -> AnyPublisher<T?, DataTransferError>
 }
 
 public class LocalStorage: LocalStorageProtocol {
@@ -27,6 +28,15 @@ public class LocalStorage: LocalStorageProtocol {
         return Deferred {
             Future { promise in
                     let object = self.realm.objects(T.self).first
+                    promise(.success(object))
+            }
+        }.eraseToAnyPublisher()
+    }
+    
+    public func fetch<T: Object>(ofType type: T.Type, listName: String) -> AnyPublisher<T?, DataTransferError> {
+        return Deferred {
+            Future { promise in
+                    let object = self.realm.objects(T.self).filter("listNameEncoded = '\(listName)'").first
                     promise(.success(object))
             }
         }.eraseToAnyPublisher()
