@@ -33,7 +33,6 @@ public final class DefaultBooksRepository {
 extension DefaultBooksRepository: BooksRepository {
     
     public func fetchBooksByCategory(listName: String, date: String) -> AnyPublisher<BooksResponse.CategoryBook, DataTransferError> {
-        
         return booksRemoteDataSource.fetchBooksByCategory(listName: listName, date: date)
             .map { [weak self] booksResponse in
                 let booksResponse = self?.networkMapper.mapCategory(booksResponse)

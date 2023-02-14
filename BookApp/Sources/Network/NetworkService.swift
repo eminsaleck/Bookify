@@ -16,4 +16,3 @@ public protocol NetworkSessionManagerProtocol {
   typealias NetworkingOutput = (data: Data, response: URLResponse)
   func request(_ request: URLRequest) -> AnyPublisher<NetworkingOutput, URLError>
 }
-

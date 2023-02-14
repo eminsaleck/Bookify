@@ -34,20 +34,31 @@ let package = Package(
         .library(
             name: "CollectionFeatureInterface",
             targets: ["CollectionFeatureInterface"]),
-
+        
     ],
     dependencies: [
         .package(url: "https://github.com/onevcat/Kingfisher.git", from: "7.6.1"),
         .package(url: "https://github.com/realm/realm-swift.git", from: "10.35.1"),
     ],
+    
     targets: [
+        .binaryTarget(
+            name: "SwiftLintBinary",
+            url: "https://github.com/realm/SwiftLint/releases/download/0.50.3/SwiftLintBinary-macos.artifactbundle.zip",
+            checksum: "abe7c0bb505d26c232b565c3b1b4a01a8d1a38d86846e788c4d02f0b1042a904"
+        ),
+        .plugin(
+            name: "SwiftLintXcode",
+            capability: .buildTool(),
+            dependencies: ["SwiftLintBinary"]
+        ),
         .target(
             name: "CollectionFeature",
             dependencies: [
-              "Common",
-              "Persistance",
-              "CollectionFeatureInterface",
-              "UI"
+                "Common",
+                "Persistance",
+                "CollectionFeatureInterface",
+                "UI"
             ]),
         .target(
             name: "CollectionFeatureInterface",
@@ -68,7 +79,9 @@ let package = Package(
             ]),
         .target(
             name: "Network",
-            dependencies: []),
+            dependencies: [],
+            plugins: ["SwiftLintXcode"]
+        ),
         .target(
             name: "AppFeature",
             dependencies: [
