@@ -8,21 +8,22 @@
 import Foundation
 import Network
 import Combine
-import RealmSwift
 import Persistance
 
 public final class DefaultBooksRepository {
     private let booksRemoteDataSource: BooksRemoteDataSourceProtocol
-    private let mapper: BooksMapperProtocol
-    private let realmManager = RealmManager()
+    private let networkMapper: BooksMapperProtocol
+    private let realmMapper: RealmMapperProtocol
     private let localDataSource: LocalStorageProtocol
     
     public init(booksRemoteDataSource: BooksRemoteDataSourceProtocol,
-                mapper: BooksMapperProtocol,
+                networkMapper: BooksMapperProtocol,
+                realmMapper: RealmMapperProtocol,
                 localDataSource: LocalStorageProtocol
     ) {
         self.booksRemoteDataSource = booksRemoteDataSource
-        self.mapper = mapper
+        self.networkMapper = networkMapper
+        self.realmMapper = realmMapper
         self.localDataSource = localDataSource
     }
 }
@@ -33,15 +34,15 @@ extension DefaultBooksRepository: BooksRepository {
         
         return booksRemoteDataSource.fetchBooksByCategory(listName: listName, date: date)
             .map { [weak self] booksResponse in
-                let booksResponse = self?.mapper.mapCategory(booksResponse)
-                self?.realmManager.cache(booksResponse: booksResponse!)
+                let booksResponse = self?.networkMapper.mapCategory(booksResponse)
+                self?.realmMapper.cache(booksResponse: booksResponse!)
                 return booksResponse!.results
             }
             .catch { error ->  AnyPublisher<BooksResponse.CategoryBook, DataTransferError> in
                 return self.localDataSource.fetch(ofType: CategoryBookObject.self, listName: listName)
                     .tryMap { object -> BooksResponse.CategoryBook in
                         if let object = object {
-                            let booksResponse = self.realmManager.mapResults(object: object)
+                            let booksResponse = self.realmMapper.mapResults(object: object)
                             return booksResponse
                         } else {
                             throw DataTransferError.noResponse

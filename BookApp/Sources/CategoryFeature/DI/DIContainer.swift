@@ -17,7 +17,8 @@ final public  class DIContainer {
     private lazy var categoryRepository: CategoryRepository = {
       return DefaultCategoryRepository(
         remoteDataSource: DefaultCategoryRemoteDataSource(dataTransferService: dependencies.apiDataTransferService),
-        localDataSource: dependencies.localStorage
+        localDataSource: dependencies.localStorage,
+        realmMapper: RealmMapper()
       )
     }()
     

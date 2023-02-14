@@ -14,11 +14,17 @@ import Persistance
 final class DefaultCategoryRepository {
     private let remoteDataSource: CategoryRemoteDataSource
     private let localDataSource: LocalStorageProtocol
+    private let realmMapper: RealmMapperProtocol
+    
     private var bag = Set<AnyCancellable>()
     
-    init(remoteDataSource: CategoryRemoteDataSource, localDataSource: LocalStorageProtocol) {
+    init(remoteDataSource: CategoryRemoteDataSource,
+         localDataSource: LocalStorageProtocol,
+         realmMapper: RealmMapperProtocol
+    ) {
         self.remoteDataSource = remoteDataSource
         self.localDataSource = localDataSource
+        self.realmMapper = realmMapper
     }
 }
 
@@ -44,19 +50,8 @@ extension DefaultCategoryRepository: CategoryRepository {
             .catch { error -> AnyPublisher<CategoryResponse, DataTransferError> in
                 return self.localDataSource.fetch(ofType: CategoryResponseObject.self)
                     .tryMap { categoryObject in
-                        if let categoryObject = categoryObject {
-                            let categoryResponse = CategoryResponse(status: categoryObject.status,
-                                                                    copyright: categoryObject.copyright,
-                                                                    numResults: categoryObject.numResults,
-                                                                    results: categoryObject.results.map { categoryListObject in
-                                CategoryList(listName: categoryListObject.listName,
-                                             displayName: categoryListObject.displayName,
-                                             listNameEncoded: categoryListObject.listNameEncoded,
-                                             oldestPublishedDate: categoryListObject.oldestPublishedDate,
-                                             newestPublishedDate: categoryListObject.newestPublishedDate,
-                                             updated: categoryListObject.updated)
-                            })
-                            return categoryResponse
+                        if let object = categoryObject {
+                            return try self.realmMapper.mapCategoryObject(categoryObject: object)
                         } else {
                             throw DataTransferError.noResponse
                         }
@@ -71,23 +66,7 @@ extension DefaultCategoryRepository: CategoryRepository {
     }
     
     private func cache(categoryResponse: CategoryResponse) {
-        let categoryResponseObject = CategoryResponseObject()
-        categoryResponseObject.status = categoryResponse.status
-        categoryResponseObject.copyright = categoryResponse.copyright
-        categoryResponseObject.numResults = categoryResponse.numResults
-        let categoryListObjects = categoryResponse.results
-            .map { categoryList -> CategoryListObject in
-                let categoryListObject = CategoryListObject()
-                categoryListObject.listName = categoryList.listName
-                categoryListObject.displayName = categoryList.displayName
-                categoryListObject.listNameEncoded = categoryList.listNameEncoded
-                categoryListObject.oldestPublishedDate = categoryList.oldestPublishedDate
-                categoryListObject.newestPublishedDate = categoryList.newestPublishedDate
-                (categoryListObject.updated = categoryList.updated)
-                return categoryListObject
-            }
-        categoryResponseObject.results.append(objectsIn: categoryListObjects)
-        
+        let categoryResponseObject = realmMapper.map(categoryResponse: categoryResponse)
         localDataSource.save(object: categoryResponseObject)
             .subscribe(on: DispatchQueue.main)
             .sink(receiveCompletion: { completion in
@@ -99,7 +78,6 @@ extension DefaultCategoryRepository: CategoryRepository {
                 }
             }, receiveValue: { _ in
                 print("cached success")
-                
             })
             .store(in: &bag)
     }

@@ -6,6 +6,7 @@
 //
 
 import Combine
+import Common
 import Network
 
 protocol FetchCategoryUseCase {

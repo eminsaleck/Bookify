@@ -9,11 +9,32 @@ import Foundation
 import RealmSwift
 import Persistance
 
-final class RealmManager {
+public protocol RealmMapperProtocol {
+    func mapResults(object: CategoryBookObject) -> BooksResponse.CategoryBook
+    func cache(booksResponse: BooksResponse)
+    func mapCategoryObject(categoryObject: CategoryResponseObject) throws -> CategoryResponse
+}
+
+public final class RealmMapper: RealmMapperProtocol {
     
     public init() { }
     
-    func mapResults(object: CategoryBookObject) -> BooksResponse.CategoryBook{
+    public func mapCategoryObject(categoryObject: CategoryResponseObject) throws -> CategoryResponse {
+         let categoryResponse = CategoryResponse(status: categoryObject.status,
+                                                 copyright: categoryObject.copyright,
+                                                 numResults: categoryObject.numResults,
+                                                 results: categoryObject.results.map { categoryListObject in
+             CategoryList(listName: categoryListObject.listName,
+                          displayName: categoryListObject.displayName,
+                          listNameEncoded: categoryListObject.listNameEncoded,
+                          oldestPublishedDate: categoryListObject.oldestPublishedDate,
+                          newestPublishedDate: categoryListObject.newestPublishedDate,
+                          updated: categoryListObject.updated)
+         })
+         return categoryResponse
+     }
+    
+    public func mapResults(object: CategoryBookObject) -> BooksResponse.CategoryBook{
         let results = BooksResponse.CategoryBook(listName: object.listName,
                                                  listNameEncoded: object.listNameEncoded,
                                                  bestsellersDate: object.bestsellersDate,
@@ -31,7 +52,7 @@ final class RealmManager {
         return results
     }
     
-    func mapBook(object: List<BookObject>) -> [BooksResponse.CategoryBook.Book]{
+     func mapBook(object: List<BookObject>) -> [BooksResponse.CategoryBook.Book]{
         object.map { bookObject in
             return BooksResponse.CategoryBook.Book(rank: bookObject.rank,
                                                    rankLastWeek: bookObject.rankLastWeek,
@@ -62,18 +83,40 @@ final class RealmManager {
         }
     }
     
-    func mapIsbn(object: List<IsbnObject>) -> [BooksResponse.CategoryBook.Isbn]{
+     func mapIsbn(object: List<IsbnObject>) -> [BooksResponse.CategoryBook.Isbn]{
         object.map { isbnObject in
             return BooksResponse.CategoryBook.Isbn(isbn10: isbnObject.isbn10, isbn13: isbnObject.isbn13)
         }
     }
     
-    func mapLinks(object: List<BuyLinkObject>) -> [BooksResponse.CategoryBook.BuyLink]{
+     func mapLinks(object: List<BuyLinkObject>) -> [BooksResponse.CategoryBook.BuyLink]{
         object.map { buyObject in
             return BooksResponse.CategoryBook.BuyLink(name: Name(rawValue: buyObject.name)!, url: buyObject.url)
         }
     }
-    func cache(booksResponse: BooksResponse) {
+    
+    public func map(categoryResponse: CategoryResponse) -> CategoryResponseObject {
+        let categoryResponseObject = CategoryResponseObject()
+        categoryResponseObject.status = categoryResponse.status
+        categoryResponseObject.copyright = categoryResponse.copyright
+        categoryResponseObject.numResults = categoryResponse.numResults
+        let categoryListObjects = categoryResponse.results.map { self.map(categoryList: $0) }
+        categoryResponseObject.results.append(objectsIn: categoryListObjects)
+        return categoryResponseObject
+    }
+    
+    public  func map(categoryList: CategoryList) -> CategoryListObject {
+        let categoryListObject = CategoryListObject()
+        categoryListObject.listName = categoryList.listName
+        categoryListObject.displayName = categoryList.displayName
+        categoryListObject.listNameEncoded = categoryList.listNameEncoded
+        categoryListObject.oldestPublishedDate = categoryList.oldestPublishedDate
+        categoryListObject.newestPublishedDate = categoryList.newestPublishedDate
+        categoryListObject.updated = categoryList.updated
+        return categoryListObject
+    }
+    
+    public func cache(booksResponse: BooksResponse) {
         let realm = try! Realm()
         try! realm.write {
             
