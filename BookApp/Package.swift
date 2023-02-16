@@ -59,24 +59,32 @@ let package = Package(
                 "Persistance",
                 "CollectionFeatureInterface",
                 "UI"
-            ]),
+            ],
+            plugins: ["SwiftLintPlug"]
+        ),
+        
         .target(
             name: "CollectionFeatureInterface",
             dependencies: [
                 "Network",
                 "Common"
-            ]),
+            ],
+            plugins: ["SwiftLintPlug"]
+        ),
         .target(
             name: "Persistance",
             dependencies: [
                 "Network",
                 .product(name: "RealmSwift", package: "realm-swift"),
-            ]),
+            ]
+        ),
         .target(
             name: "NetworkManager",
             dependencies: [
                 "Network"
-            ]),
+            ],
+            plugins: ["SwiftLintPlug"]
+        ),
         .target(
             name: "Network",
             dependencies: [],
@@ -104,14 +112,18 @@ let package = Package(
                 "UI",
                 "NetworkManager",
                 "Network",
-                .product(name: "RealmSwift", package: "realm-swift"),
-            ]),
+                .product(name: "RealmSwift", package: "realm-swift")
+            ],
+            plugins: ["SwiftLintPlug"]
+        ),
         .target(
             name: "Common",
             dependencies: [
                 "Persistance",
                 .product(name: "RealmSwift", package: "realm-swift"),
-            ]),
+            ],
+            plugins: ["SwiftLintPlug"]
+        ),
         .target(
             name: "UI",
             dependencies: [
@@ -120,7 +132,6 @@ let package = Package(
             ],
             resources: [
                 .process("Resources"),
-            ]
-        )
+            ])
     ]
 )

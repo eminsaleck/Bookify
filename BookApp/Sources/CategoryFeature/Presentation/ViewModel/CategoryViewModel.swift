@@ -10,15 +10,11 @@ import Combine
 import Common
 import Network
 
-final class CategoryViewModel: CategoryViewModelProtocol{
-    
+final class CategoryViewModel: CategoryViewModelProtocol {
     weak var delegate: CategoryViewModelDelegate?
-    
     weak var coordinator: CategoryCoordinatorProtocol?
     var useCase: FetchCategoryUseCase
-    
     private let dateFormatter = DateFormatter()
-    
     let viewState = CurrentValueSubject<CategoryViewState, Never>(.loading)
     let dataSource = CurrentValueSubject<[CategorySectionModel], Never>([])
 
@@ -27,18 +23,15 @@ final class CategoryViewModel: CategoryViewModelProtocol{
     init(useCase: FetchCategoryUseCase) {
         self.useCase = useCase
     }
-    
     public func viewDidLoad() {
         fetch()
     }
- 
     private func fetchCategories() -> AnyPublisher<CategoryResponse, ErrorEnvelope> {
         return useCase.execute(requestValue: FetchCategoryUseCaseRequestValue())
             .mapError { error -> ErrorEnvelope in return ErrorEnvelope(transferError: error) }
           .eraseToAnyPublisher()
       }
-
-    func fetch(){
+    func fetch() {
            fetchCategories()
                .receive(on: DispatchQueue.main)
                .sink(receiveCompletion: { completion in
@@ -57,7 +50,6 @@ final class CategoryViewModel: CategoryViewModelProtocol{
                })
                .store(in: &bag)
        }
-    
     private func processFetched(for response: CategoryResponse) {
         let fetchedCategories = (response.results)
       if fetchedCategories.isEmpty {
@@ -66,19 +58,14 @@ final class CategoryViewModel: CategoryViewModelProtocol{
         viewState.send(.populated )
       }
     }
-    
     private func createSectionModel(categories: [CategoryList]) {
         var sectionModel: [CategorySectionModel] = []
-        
         let categorySectionItem = createSectionFor(categories: categories)
 
         if !categorySectionItem.isEmpty {
-            
           sectionModel.append(.categories(items: categorySectionItem))
         }
-        
         dataSource.send(sectionModel)
-        
     }
 
     private func createSectionFor(categories: [CategoryList] ) -> [CategorySectionItem] {
@@ -86,7 +73,6 @@ final class CategoryViewModel: CategoryViewModelProtocol{
             .map {CategoryCellViewModel(category: $0, formatter: dateFormatter)  }
         .map { CategorySectionItem.categories(items: $0) }
     }
-    
     func modelIsPicked(with item: CategorySectionItem) {
         switch item {
         case .categories(items: let category):
@@ -94,7 +80,4 @@ final class CategoryViewModel: CategoryViewModelProtocol{
                                                           listName: category.listNameEncoded))
         }
     }
-    
 }
-
-

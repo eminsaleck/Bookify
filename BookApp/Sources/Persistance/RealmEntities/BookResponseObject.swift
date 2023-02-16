@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-public class BookObject: Object{
+public class BookObject: Object {
     @objc public dynamic var id = UUID().uuidString
     @objc public dynamic var rank: Int = 0
     @objc public dynamic var rankLastWeek: Int = 0
@@ -36,18 +36,15 @@ public class BookObject: Object{
     public let isbns = List<IsbnObject>()
     public let buyLinks = List<BuyLinkObject>()
     @objc public dynamic var bookURI: String = ""
-    
-    
     public override static func primaryKey() -> String? {
         return "id"
     }
 }
 
-public class IsbnObject: Object{
+public class IsbnObject: Object {
     @objc public dynamic var id = UUID().uuidString
     @objc public dynamic var isbn10: String = ""
     @objc public dynamic var isbn13: String = ""
-    
     public override static func primaryKey() -> String? {
         return "id"
     }
@@ -57,7 +54,6 @@ public class BuyLinkObject: Object {
     @objc public dynamic var id = UUID().uuidString
     @objc public dynamic var  name: String = ""
     @objc public dynamic var  url: String = ""
-    
     public override static func primaryKey() -> String? {
         return "id"
     }
@@ -77,9 +73,7 @@ public class CategoryBookObject: Object {
     @objc public dynamic var updated: String = ""
     public dynamic var books = List<BookObject>()
     public dynamic var corrections = List<String>()
-    
     public override static func primaryKey() -> String? {
         return "id"
     }
-    
 }

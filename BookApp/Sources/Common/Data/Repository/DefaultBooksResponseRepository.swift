@@ -15,9 +15,7 @@ public final class DefaultBooksRepository {
     private let networkMapper: BooksMapperProtocol
     private let realmMapper: RealmMapperProtocol
     private let localDataSource: LocalStorageProtocol
-    
     private var bag = Set<AnyCancellable>()
-    
     public init(booksRemoteDataSource: BooksRemoteDataSourceProtocol,
                 networkMapper: BooksMapperProtocol,
                 realmMapper: RealmMapperProtocol,
@@ -31,15 +29,15 @@ public final class DefaultBooksRepository {
 }
 
 extension DefaultBooksRepository: BooksRepository {
-    
-    public func fetchBooksByCategory(listName: String, date: String) -> AnyPublisher<BooksResponse.CategoryBook, DataTransferError> {
+    public func fetchBooksByCategory(
+        listName: String, date: String) -> AnyPublisher<BooksResponse.CategoryBook, DataTransferError> {
         return booksRemoteDataSource.fetchBooksByCategory(listName: listName, date: date)
             .map { [weak self] booksResponse in
                 let booksResponse = self?.networkMapper.mapCategory(booksResponse)
                 self?.cache(booksResponse!)
                 return booksResponse!.results
             }
-            .catch { error ->  AnyPublisher<BooksResponse.CategoryBook, DataTransferError> in
+            .catch { error -> AnyPublisher<BooksResponse.CategoryBook, DataTransferError> in
                 return self.localDataSource.fetch(ofType: CategoryBookObject.self, listName: listName)
                     .tryMap { object -> BooksResponse.CategoryBook in
                         if let object = object {
@@ -51,10 +49,9 @@ extension DefaultBooksRepository: BooksRepository {
                     }
                     .subscribe(on: DispatchQueue.main)
                     .mapError { error -> DataTransferError in
-                        switch error {
-                        case is DataTransferError:
-                            return error as! DataTransferError
-                        default:
+                        if let transferError = error as? DataTransferError {
+                            return transferError
+                        } else {
                             return DataTransferError.noResponse
                         }
                     }
@@ -62,7 +59,6 @@ extension DefaultBooksRepository: BooksRepository {
             }
             .eraseToAnyPublisher()
     }
-    
     private func cache(_ booksResponse: BooksResponse) {
         let object = realmMapper.mapCategoryBookObject(booksResponse: booksResponse)
         localDataSource.save(object: object)
@@ -80,10 +76,3 @@ extension DefaultBooksRepository: BooksRepository {
             .store(in: &bag)
     }
 }
-
-
-
-
-
-
-

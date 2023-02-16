@@ -7,8 +7,6 @@
 
 import Foundation
 
-import Foundation
-
 public protocol BooksMapperProtocol {
   func mapCategory(_ category: BooksResponseDTO) -> BooksResponse
 }

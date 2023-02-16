@@ -10,9 +10,7 @@ import Combine
 import UI
 
 class CategoryRootView: UIView {
-    
     private let viewModel: CategoryViewModelProtocol
-    
     let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.rowHeight = UITableView.automaticDimension
@@ -24,52 +22,48 @@ class CategoryRootView: UIView {
                            forCellReuseIdentifier: CellID.category.id)
         return tableView
     }()
-    
     typealias DataSource = UITableViewDiffableDataSource<CategorySectionView, CategorySectionItem>
     typealias Snapshot = NSDiffableDataSourceSnapshot<CategorySectionView, CategorySectionItem>
     private var dataSource: DataSource?
-    
     private var bag = Set<AnyCancellable>()
-    
     init(frame: CGRect = .zero, viewModel: CategoryViewModelProtocol) {
         self.viewModel = viewModel
         super.init(frame: frame)
-        
         addSubview(tableView)
         constrained()
         configUI()
-        
     }
-    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     private func configUI() {
         tableView.delegate = self
-        
         configDataSource()
         subscribe()
     }
-    
     private func configDataSource() {
         tableView.delegate = self
-        
-        dataSource = UITableViewDiffableDataSource<CategorySectionView, CategorySectionItem>(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, model in
+        dataSource = UITableViewDiffableDataSource<CategorySectionView,
+                                                   CategorySectionItem>(
+                                                    tableView: tableView,
+                                                    cellProvider: { [weak self] tableView, indexPath, model in
             switch model {
             case .categories(items: let category):
                 return self?.makeCellForCategory(tableView, at: indexPath, viewModel: category)
             }
         })
     }
-    
-    private func makeCellForCategory(_ tableView: UITableView, at indexPath: IndexPath, viewModel: CategoryCellViewModel) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: CellID.category.id, for: indexPath) as! CategoryTableViewCell
-        
+    private func makeCellForCategory(_ tableView: UITableView,
+                                     at indexPath: IndexPath,
+                                     viewModel: CategoryCellViewModel) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CellID.category.id,
+                                                       for: indexPath) as? CategoryTableViewCell else {
+            fatalError("Failed to dequeue a CategoryTableViewCell with identifier \(CellID.category.id)")
+        }
         cell.configViewModel(viewModel)
         return cell
     }
-    
-    private func constrained(){
+    private func constrained() {
         NSLayoutConstraint.activate([
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -77,7 +71,6 @@ class CategoryRootView: UIView {
             tableView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
-    
     private func subscribe() {
         viewModel.dataSource
             .map { dataSource -> Snapshot in
@@ -96,9 +89,7 @@ class CategoryRootView: UIView {
     }
 }
 
-
 extension CategoryRootView: UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let model = dataSource?.itemIdentifier(for: indexPath) {
             tableView.deselectRow(at: indexPath, animated: true)

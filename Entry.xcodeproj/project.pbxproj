@@ -129,6 +129,7 @@
 				AC9A68B1298D143100ACFC3D /* Sources */,
 				AC9A68B2298D143100ACFC3D /* Frameworks */,
 				AC9A68B3298D143100ACFC3D /* Resources */,
+				AC9E8C2C299BD98A00D6816B /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -248,6 +249,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		AC9E8C2C299BD98A00D6816B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "
+";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		AC9A68B1298D143100ACFC3D /* Sources */ = {

@@ -14,14 +14,11 @@ public protocol RealmMapperProtocol {
     func mapCategoryObject(categoryObject: CategoryResponseObject) throws -> CategoryResponse
     func mapCategoryBookObject(booksResponse: BooksResponse) -> CategoryBookObject
     func map(categoryList: CategoryList) -> CategoryListObject
-    func map(categoryResponse: CategoryResponse) -> CategoryResponseObject 
-
+    func map(categoryResponse: CategoryResponse) -> CategoryResponseObject
 }
 
 public final class RealmMapper: RealmMapperProtocol {
-    
     public init() { }
-    
     public func mapCategoryObject(categoryObject: CategoryResponseObject) throws -> CategoryResponse {
         let categoryResponse = CategoryResponse(status: categoryObject.status,
                                                 copyright: categoryObject.copyright,
@@ -36,8 +33,8 @@ public final class RealmMapper: RealmMapperProtocol {
         })
         return categoryResponse
     }
-    
-    public func mapResults(object: CategoryBookObject) -> BooksResponse.CategoryBook{
+    public func mapResults(object: CategoryBookObject)
+    -> BooksResponse.CategoryBook {
         let results = BooksResponse.CategoryBook(listName: object.listName,
                                                  listNameEncoded: object.listNameEncoded,
                                                  bestsellersDate: object.bestsellersDate,
@@ -54,8 +51,7 @@ public final class RealmMapper: RealmMapperProtocol {
                                                  books: mapBook(object: object.books))
         return results
     }
-    
-    func mapBook(object: List<BookObject>) -> [BooksResponse.CategoryBook.Book]{
+    func mapBook(object: List<BookObject>) -> [BooksResponse.CategoryBook.Book] {
         object.map { bookObject in
             return BooksResponse.CategoryBook.Book(rank: bookObject.rank,
                                                    rankLastWeek: bookObject.rankLastWeek,
@@ -85,19 +81,17 @@ public final class RealmMapper: RealmMapperProtocol {
                                                    bookURI: bookObject.bookURI)
         }
     }
-    
-    func mapIsbn(object: List<IsbnObject>) -> [BooksResponse.CategoryBook.Isbn]{
+    func mapIsbn(object: List<IsbnObject>) -> [BooksResponse.CategoryBook.Isbn] {
         object.map { isbnObject in
             return BooksResponse.CategoryBook.Isbn(isbn10: isbnObject.isbn10, isbn13: isbnObject.isbn13)
         }
     }
-    
-    func mapLinks(object: List<BuyLinkObject>) -> [BooksResponse.CategoryBook.BuyLink]{
+    func mapLinks(object: List<BuyLinkObject>)
+    -> [BooksResponse.CategoryBook.BuyLink] {
         object.map { buyObject in
             return BooksResponse.CategoryBook.BuyLink(name: Name(rawValue: buyObject.name)!, url: buyObject.url)
         }
     }
-    
     public func map(categoryResponse: CategoryResponse) -> CategoryResponseObject {
         let categoryResponseObject = CategoryResponseObject()
         categoryResponseObject.status = categoryResponse.status
@@ -107,7 +101,6 @@ public final class RealmMapper: RealmMapperProtocol {
         categoryResponseObject.results.append(objectsIn: categoryListObjects)
         return categoryResponseObject
     }
-    
     public  func map(categoryList: CategoryList) -> CategoryListObject {
         let categoryListObject = CategoryListObject()
         categoryListObject.listName = categoryList.listName
@@ -118,8 +111,8 @@ public final class RealmMapper: RealmMapperProtocol {
         categoryListObject.updated = categoryList.updated
         return categoryListObject
     }
-    
-    public func mapCategoryBookObject(booksResponse: BooksResponse) -> CategoryBookObject {
+    public func mapCategoryBookObject(booksResponse: BooksResponse)
+    -> CategoryBookObject {
         let categoryBookObject = CategoryBookObject()
         let categoryBook = booksResponse.results
         categoryBookObject.listName = categoryBook.listName
@@ -133,7 +126,6 @@ public final class RealmMapper: RealmMapperProtocol {
         categoryBookObject.normalListEndsAt = categoryBook.normalListEndsAt
         categoryBookObject.updated = categoryBook.updated
         categoryBookObject.corrections.append(objectsIn: categoryBook.corrections)
-        
         let bookObjects = categoryBook.books
             .map { book -> BookObject in
                 let bookObject = BookObject()
@@ -160,7 +152,6 @@ public final class RealmMapper: RealmMapperProtocol {
                 bookObject.firstChapterLink = book.firstChapterLink
                 bookObject.sundayReviewLink = book.sundayReviewLink
                 bookObject.articleChapterLink = book.articleChapterLink
-                
                 let isbnObjects = book.isbns.map { isbn -> IsbnObject in
                     let isbnObject = IsbnObject()
                     isbnObject.isbn10 = isbn.isbn10
@@ -168,7 +159,6 @@ public final class RealmMapper: RealmMapperProtocol {
                     return isbnObject
                 }
                 bookObject.isbns.append(objectsIn: isbnObjects)
-                
                 let buyLinkObjects = book.buyLinks.map { buyLink -> BuyLinkObject in
                     let links = BuyLinkObject()
                     links.name = buyLink.name.rawValue
@@ -182,5 +172,3 @@ public final class RealmMapper: RealmMapperProtocol {
         return categoryBookObject
     }
 }
-
-

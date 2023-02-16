@@ -10,7 +10,6 @@ import UI
 import Combine
 
 public class CollectionCell: UICollectionViewCell {
-    
     private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleToFill
@@ -20,7 +19,6 @@ public class CollectionCell: UICollectionViewCell {
         imageView.clipsToBounds = true
         return imageView
     }()
-    
     private lazy var title: UILabel = {
         let label = UILabel()
         label.numberOfLines = 2
@@ -31,7 +29,6 @@ public class CollectionCell: UICollectionViewCell {
         label.adjustsFontForContentSizeCategory = true
         return label
     }()
-    
     private let publisher: UILabel = {
         let label = UILabel(frame: .zero)
         label.numberOfLines = 0
@@ -40,7 +37,6 @@ public class CollectionCell: UICollectionViewCell {
         label.adjustsFontForContentSizeCategory = true
         return label
     }()
-    
     private let author: UILabel = {
         let label = UILabel(frame: .zero)
         label.numberOfLines = 0
@@ -49,7 +45,6 @@ public class CollectionCell: UICollectionViewCell {
         label.adjustsFontForContentSizeCategory = true
         return label
     }()
-    
     private let linksToBuy: UILabel = {
         let label = UILabel(frame: .zero)
         label.numberOfLines = 0
@@ -59,7 +54,6 @@ public class CollectionCell: UICollectionViewCell {
         label.adjustsFontForContentSizeCategory = true
         return label
     }()
-    
     private lazy var descriptions: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
@@ -69,7 +63,6 @@ public class CollectionCell: UICollectionViewCell {
         label.adjustsFontForContentSizeCategory = true
         return label
     }()
-    
     private lazy var topStackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [rankStackView, title, author, publisher])
         stack.axis = .vertical
@@ -80,18 +73,15 @@ public class CollectionCell: UICollectionViewCell {
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
-    
     private let starImageView: UIImageView = {
         let largeConfig = UIImage.SymbolConfiguration(pointSize: 14, weight: .bold, scale: .large)
         let starFill = UIImage(systemName: "star.fill", withConfiguration: largeConfig)
-        
         let imageView = UIImageView()
         imageView.image = starFill
         imageView.contentMode = .scaleAspectFit
         imageView.tintColor = .systemYellow
         return imageView
     }()
-    
     private lazy var rank: UILabel = {
         let label = UILabel(frame: .zero)
         label.numberOfLines = 0
@@ -99,7 +89,6 @@ public class CollectionCell: UICollectionViewCell {
         label.adjustsFontForContentSizeCategory = true
         return label
     }()
-    
     private lazy var rankStackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [rank, starImageView])
         stack.axis = .horizontal
@@ -108,7 +97,6 @@ public class CollectionCell: UICollectionViewCell {
         stack.spacing = 5.0
         return stack
     }()
-    
     private lazy var bottomStackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [descriptions])
         stack.axis = .vertical
@@ -119,7 +107,6 @@ public class CollectionCell: UICollectionViewCell {
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
-    
     private lazy var buyStackView: UIStackView = {
         let stack = UIStackView(arrangedSubviews: [linksToBuy, linskStackView])
         stack.axis = .horizontal
@@ -130,7 +117,6 @@ public class CollectionCell: UICollectionViewCell {
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
-    
     private lazy var linskStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
@@ -140,21 +126,15 @@ public class CollectionCell: UICollectionViewCell {
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
-    
     weak var delegate: CollectionCellDelegate?
-    
     private var bag = Set<AnyCancellable>()
-    
-    private var shopsSubject = PassthroughSubject<Set<[String:String]>, Never>()
-    
-    private var shops = Set<[String:String]>()
-    
+    private var shopsSubject = PassthroughSubject<Set<[String: String]>, Never>()
+    private var shops = Set<[String: String]>()
     public override init(frame: CGRect) {
         super.init(frame: frame)
         configUI()
         subscribe()
     }
-    
     public func setModel(viewModel: CollectionCellViewModel) {
         imageView.setImage(viewModel.image)
         title.text = viewModel.title
@@ -162,44 +142,40 @@ public class CollectionCell: UICollectionViewCell {
         rank.text = String(viewModel.rank)
         descriptions.text = viewModel.description
         author.text = viewModel.author
-        
         configRank(viewModel: viewModel)
         setLinks(viewModel: viewModel)
     }
-    
     private func setLinks(viewModel: CollectionCellViewModel) {
         var newShops = Set<[String: String]>()
         viewModel.links.forEach { name in
             switch name.name {
             case .amazon:
-                let dict = [name.name.rawValue : name.url]
+                let dict = [name.name.rawValue: name.url]
                 newShops.insert(dict)
             case .appleBooks:
-                let dict = [name.name.rawValue : name.url]
+                let dict = [name.name.rawValue: name.url]
                 newShops.insert(dict)
             case .barnesAndNoble:
-                let dict = [name.name.rawValue : name.url]
+                let dict = [name.name.rawValue: name.url]
                 newShops.insert(dict)
             case .booksAMillion:
-                let dict = [name.name.rawValue : name.url]
+                let dict = [name.name.rawValue: name.url]
                 newShops.insert(dict)
             case .bookshop:
-                let dict = [name.name.rawValue : name.url]
+                let dict = [name.name.rawValue: name.url]
                 newShops.insert(dict)
             case .indieBound:
-                let dict = [name.name.rawValue : name.url]
+                let dict = [name.name.rawValue: name.url]
                 newShops.insert(dict)
             }
         }
         shops = newShops
         shopsSubject.send(shops)
     }
-    
     private func subscribe() {
         shopsSubject
             .sink(receiveValue: { [weak self] shops in
                 self?.linskStackView.arrangedSubviews.forEach({ $0.removeFromSuperview() })
-                
                 shops.forEach { dict in
                     dict.forEach { name, url in
                         let button = SubButton(type: .system)

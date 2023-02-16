@@ -5,16 +5,13 @@
 //  Created by LEMIN DAHOVICH on 04.02.2023.
 //
 
-
 import Foundation
 
 public struct BooksResponse {
-    
     public   let status, copyright: String
     public  let numResults: Int
     public  let lastModified: String
     public  let results: CategoryBook
-    
     public init(copyright: String,
                 lastModified: String,
                 numResults: Int,
@@ -26,7 +23,6 @@ public struct BooksResponse {
         self.status = status
         self.copyright = copyright
     }
-    
     public struct CategoryBook {
         public let listName,
                    listNameEncoded,
@@ -41,7 +37,6 @@ public struct BooksResponse {
         public let corrections: [String]
         public let books: [Book]
 
-        
         public init(listName: String,
                     listNameEncoded: String,
                     bestsellersDate: String,
@@ -69,7 +64,6 @@ public struct BooksResponse {
             self.books = books
             self.corrections = corrections
         }
-        
         public struct BuyLink: Hashable {
             public let name: Name
             public let url: String
@@ -79,7 +73,6 @@ public struct BooksResponse {
                 self.url = url
             }
         }
-        
         public struct Isbn {
             public let isbn10, isbn13: String
             
@@ -88,7 +81,6 @@ public struct BooksResponse {
                 self.isbn13 = isbn13
             }
         }
-        
         public struct Book: Hashable, Equatable {
             public let rank, rankLastWeek, weeksOnList, asterisk: Int
             public let dagger: Int
@@ -106,11 +98,9 @@ public struct BooksResponse {
             public let isbns: [Isbn]
             public let buyLinks: [BuyLink]
             public let bookURI: String
-            
             public static func == (lhs: Book, rhs: Book) -> Bool {
                 return lhs.rank == rhs.rank && lhs.primaryIsbn10 == rhs.primaryIsbn10 && lhs.title == rhs.title
             }
-            
             public func hash(into hasher: inout Hasher) {
                 hasher.combine(rank)
                 hasher.combine(primaryIsbn10)
@@ -119,6 +109,3 @@ public struct BooksResponse {
         }
     }
 }
-
-
-

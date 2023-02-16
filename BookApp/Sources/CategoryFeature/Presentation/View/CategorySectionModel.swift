@@ -41,9 +41,8 @@ enum CategorySectionItem: Hashable {
   case categories(items: CategoryCellViewModel)
 }
 
-enum CellID{
+enum CellID {
     case category
-    
     var id: String {
         switch self {
         case  .category:

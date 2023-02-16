@@ -24,8 +24,8 @@ public struct ErrorEnvelope {
   }
 
   public enum TodayCode: String {
-    case MappingFailed = "mapping_failed"
-    case TransferError = "transfer_error"
+    case mappingFailed = "mapping_failed"
+    case mransferError = "transfer_error"
   }
 }
 

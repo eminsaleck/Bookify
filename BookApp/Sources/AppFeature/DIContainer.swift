@@ -34,17 +34,14 @@ public class DIContainer {
         let networkService = NetworkService(config: configuration)
         return DataTransferService(with: networkService)
     }()
-    
     private lazy var localStorage: LocalStorage = {
         return LocalStorage()
     }()
-    
     public init(appConfigurations: AppConfigurationProtocol) {
         self.appConfigurations = appConfigurations
-        language = Language(languageStrings: Locale.preferredLanguages) ?? .en
+        language = Language(languageStrings: Locale.preferredLanguages) ?? .eng
         Localized.currentLocale = Locale(identifier: language.rawValue)
     }
-    
 }
 
 extension DIContainer {
@@ -57,11 +54,11 @@ extension DIContainer {
 }
 
 extension DIContainer: ModuleCollectionBuilder {
-    public func buildModuleCoordinator(in navigationController: UINavigationController, delegate: CollectionCoordinatorDelegate?) -> CollectionCoordinatorProtocol {
-        let dependencies = CollectionFeatureInterface.FeatureDependencies(apiDataTransferService: apiDataTransferService, localStorage: localStorage)
-        
+    public func buildModuleCoordinator(in navigationController: UINavigationController,
+                                       delegate: CollectionCoordinatorDelegate?) -> CollectionCoordinatorProtocol {
+        let dependencies = CollectionFeatureInterface
+            .FeatureDependencies(apiDataTransferService: apiDataTransferService, localStorage: localStorage)
         let module = CollectionFeature.Module(dependencies: dependencies)
         return module.buildModuleCoordinator(in: navigationController, delegate: delegate)
     }
-    
 }

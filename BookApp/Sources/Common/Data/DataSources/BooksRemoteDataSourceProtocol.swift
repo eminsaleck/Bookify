@@ -12,4 +12,3 @@ public protocol BooksRemoteDataSourceProtocol {
 
   func fetchBooksByCategory(listName: String, date: String) -> AnyPublisher<BooksResponseDTO, DataTransferError>
 }
-

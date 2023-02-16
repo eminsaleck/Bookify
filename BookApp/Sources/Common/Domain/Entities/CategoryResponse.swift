@@ -12,7 +12,6 @@ public struct CategoryResponse {
     public let copyright: String
     public let numResults: Int
     public let results: [CategoryList]
-    
     public init(status: String, copyright: String, numResults: Int, results: [CategoryList]) {
         self.status = status
         self.copyright = copyright

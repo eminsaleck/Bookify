@@ -20,8 +20,10 @@ public enum CategoryState: State {
 
 protocol CategoryCoordinatorDependencies {
     func buildCategoryViewController(coordinator: CategoryCoordinatorProtocol?) -> UIViewController
-    func buildCollectionCoordinator(navigationController: UINavigationController,
-                              delegate: CollectionCoordinatorDelegate?) -> CollectionCoordinatorProtocol
+    func buildCollectionCoordinator(
+        navigationController: UINavigationController,
+        delegate: CollectionCoordinatorDelegate?)
+    -> CollectionCoordinatorProtocol
 }
 
 public enum CategoryChildCoordinator {

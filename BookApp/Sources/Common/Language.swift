@@ -6,17 +6,14 @@
 //
 
 public enum Language: String, CaseIterable {
-    case en
-    case ua
-    
-    
+    case eng
+    case ukr
     public init?(languageStrings languages: [String]) {
         guard let preferedLanguage = languages.first,
               let language = Language.init(
                 rawValue: String(preferedLanguage.prefix(2).lowercased())) else {
             return nil
         }
-        
         self = language
     }
 }
