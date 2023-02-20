@@ -35,7 +35,7 @@ public class DIContainer {
         return DataTransferService(with: networkService)
     }()
     private lazy var localStorage: LocalStorage = {
-        return LocalStorage()
+        return LocalStorage(realmStorage: .shared)
     }()
     public init(appConfigurations: AppConfigurationProtocol) {
         self.appConfigurations = appConfigurations

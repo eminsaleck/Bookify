@@ -16,15 +16,17 @@ public protocol LocalStorageProtocol {
     func fetch<T: Object>(ofType type: T.Type, listName: String) -> AnyPublisher<T?, DataTransferError>
 }
 
-public class LocalStorage: LocalStorageProtocol {
-    private let realm: Realm
-    public init() {
-        self.realm = try! Realm()
+public final class LocalStorage: LocalStorageProtocol {
+    private let realmStorage: RealmStorage
+
+    public init(realmStorage: RealmStorage) {
+      self.realmStorage = realmStorage
     }
+    
     public func fetch<T: Object>(ofType type: T.Type) -> AnyPublisher<T?, DataTransferError> {
         return Deferred {
             Future { promise in
-                let object = self.realm.objects(T.self).first
+                let object = self.realmStorage.realm.objects(T.self).first
                 promise(.success(object))
             }
         }.eraseToAnyPublisher()
@@ -32,7 +34,7 @@ public class LocalStorage: LocalStorageProtocol {
     public func fetch<T: Object>(ofType type: T.Type, listName: String) -> AnyPublisher<T?, DataTransferError> {
         return Deferred {
             Future { promise in
-                let object = self.realm.objects(T.self).filter("listNameEncoded = '\(listName)'").first
+                let object = self.realmStorage.realm.objects(T.self).filter("listNameEncoded = '\(listName)'").first
                 promise(.success(object))
             }
         }.eraseToAnyPublisher()
@@ -41,8 +43,8 @@ public class LocalStorage: LocalStorageProtocol {
         return Deferred {
             Future { promise in
                 do {
-                    try self.realm.write {
-                        self.realm.add(object, update: .modified)
+                    try self.realmStorage.realm.write {
+                        self.realmStorage.realm.add(object, update: .modified)
                     }
                     promise(.success(()))
                 } catch let error as DataTransferError {
